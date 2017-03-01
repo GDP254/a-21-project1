@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 from unittest import TestCase, main
+
 from fellow_tests import TestFellow
 from staff_tests import TestStaff
 

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 from unittest import TestCase, main
+
 from office_tests import TestOffice
 from livingspace_tests import TestLivingSpace
 
