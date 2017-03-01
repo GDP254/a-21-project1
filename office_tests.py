@@ -4,6 +4,11 @@ from unittest import TestCase, main
 
 class TestOffice(TestCase):
 
+	"""
+		Grouping: Attribute tests
+		Description: The following tests confirm that necessary attributes exist
+	"""
+
 	def test_capacity_is_six(self):
 		office = Office("Rand")
 		self.assertEquals(office.capacity, 6)
@@ -15,6 +20,12 @@ class TestOffice(TestCase):
 	def test_has_persons(self):
 		office = Office("Rando")
 		self.assertEquals(office.persons, [])
+
+	"""
+		Grouping: Constructor input tests
+		Description: The following tests confirm the constructor for instances of 
+					Office respond appropriately to various input
+	"""
 
 	def test_constructor_no_argument(self):
 		with self.assertRaises(ValueError):
@@ -60,6 +71,12 @@ class TestOffice(TestCase):
 		office = Office("LOLZ")
 		self.assertEquals(office.name, "Lolz")
 
+	"""
+		Grouping: Inheritance tests
+		Description: The following tests confirm the instances of Office are
+					sub-classes of Room
+	"""
+
 	def test_isinstance_of_room(self):
 		office = Office('Focuspoint')
 		self.assertIsInstance(office, Room)
@@ -67,6 +84,12 @@ class TestOffice(TestCase):
 	def test_notinstance_of_livingspace(self):
 		office = Office('Mkuru')
 		self.assertNotIsInstance(office, LivingSpace)
+
+	"""
+		Grouping: Save state tests
+		Description: The following tests confirm the save_state method of the
+					class Office is functioning properly
+	"""
 
 	def test_save_state_room_exists_error(self):
 		office = Office('Nderi')
@@ -90,6 +113,12 @@ class TestOffice(TestCase):
 		office.save_state()
 		new_room_count = len(State.rooms)
 		self.assertEquals(initial_room_count + 1, new_room_count)
+
+	"""
+		Grouping: Assign tests
+		Description: The following tests confirm the assign method of the
+					class Assign is functioning properly
+	"""
 
 	def test_assign_new_optin_fellow_space(self):
 		fellow = Fellow("Neritus", "Otieno", "0784334220", "Y")

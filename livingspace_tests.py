@@ -4,6 +4,11 @@ from unittest import TestCase, main
 
 class TestLivingSpace(TestCase):
 
+	"""
+		Grouping: Attribute tests
+		Description: The following tests confirm that necessary attributes exist
+	"""
+
 	def test_capacity_is_four(self):
 		livingspace = LivingSpace("Rand")
 		self.assertEquals(livingspace.capacity, 4)
@@ -15,6 +20,12 @@ class TestLivingSpace(TestCase):
 	def test_has_persons(self):
 		livingspace = LivingSpace("Rando")
 		self.assertEquals(livingspace.persons, [])
+
+	"""
+		Grouping: Constructor input tests
+		Description: The following tests confirm the constructor for instances of 
+					LivingSpace respond appropriately to various input
+	"""
 
 	def test_constructor_no_argument(self):
 		with self.assertRaises(ValueError):
@@ -60,6 +71,12 @@ class TestLivingSpace(TestCase):
 		livingspace = LivingSpace("LOLZ")
 		self.assertEquals(livingspace.name, "Lolz")
 
+	"""
+		Grouping: Inheritance tests
+		Description: The following tests confirm the instances of LivingSpace are
+					sub-classes of Room
+	"""
+
 	def test_isinstance_of_room(self):
 		livingspace = LivingSpace('Focuspoint')
 		self.assertIsInstance(livingspace, Room)
@@ -67,6 +84,12 @@ class TestLivingSpace(TestCase):
 	def test_notinstance_of_Office(self):
 		livingspace = LivingSpace('Mkuru')
 		self.assertNotIsInstance(livingspace, Office)
+
+	"""
+		Grouping: Save state tests
+		Description: The following tests confirm the save_state method of the
+					class Livingspace is functioning properly
+	"""
 
 	def test_save_state_room_exists_error(self):
 		livingspace = LivingSpace('Nderi')
@@ -90,6 +113,12 @@ class TestLivingSpace(TestCase):
 		livingspace.save_state()
 		new_room_count = len(State.rooms)
 		self.assertEquals(initial_room_count + 1, new_room_count)
+
+	"""
+		Grouping: Assign tests
+		Description: The following tests confirm the assign method of the
+					class Livingspace is functioning properly
+	"""
 
 	def test_assign_new_optin_fellow_space(self):
 		fellow = Fellow("Neritus", "Otieno", "0784334220", "Y")

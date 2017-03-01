@@ -4,6 +4,11 @@ from unittest import TestCase, main
 
 class TestFellow(TestCase):
 
+	"""
+		Grouping: Attribute tests
+		Description: The following tests confirm that necessary attributes exist
+	"""
+
 	def test_has_first_name(self):
 		fellow = Fellow("Rando", "Dire", "0754838434", "Y")
 		self.assertEquals(fellow.first_name, "Rando")
@@ -19,6 +24,12 @@ class TestFellow(TestCase):
 	def test_has_choice(self):
 		fellow = Fellow("Randode", "Direde", "0794838434", "N")
 		self.assertEquals(fellow.choice, "N")
+
+	"""
+		Grouping: Constructor input tests
+		Description: The following tests confirm the constructor for instances of 
+					Fellow respond appropriately to various input
+	"""
 
 	def test_constructor_no_argument(self):
 		with self.assertRaises(ValueError):
@@ -65,6 +76,12 @@ class TestFellow(TestCase):
 		fellow = Fellow("LOLZ", "SKID", "8483774855", "Y")
 		self.assertEquals([fellow.first_name, fellow.second_name, fellow.phone, fellow.choice], ["Lolz", "Skid", "8483774855", "Y"])
 
+	"""
+		Grouping: Save state tests
+		Description: The following tests confirm the save_state method of the
+					class Fellow is functioning properly
+	"""
+	
 	def test_save_state_phone_exists_error(self):
 		fellow = Fellow("LIOLZ", "SKIDH", "8483774855", "Y")
 		fellow.save_state()
