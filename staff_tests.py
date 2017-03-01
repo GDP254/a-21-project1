@@ -74,7 +74,7 @@ class TestStaff(TestCase):
 			staff_1.save_state()
 
 	def test_save_state_phone_exists(self):
-		staff = Staff("LIOLZ", "SKIDH", "8483774855")
+		staff = Staff("LIOLZ", "SKIDH", "8483874855")
 		initial_person_count = len(State.persons)
 		staff.save_state()
 		staff_1 = Staff("LIOZ", "SIDH", "8483874855")

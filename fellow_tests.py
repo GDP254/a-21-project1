@@ -73,7 +73,7 @@ class TestFellow(TestCase):
 			fellow_1.save_state()
 
 	def test_save_state_phone_exists(self):
-		fellow = Fellow("LIOLZ", "SKIDH", "8483774855", "Y")
+		fellow = Fellow("LIOLZ", "SKIDH", "8483874855", "Y")
 		initial_person_count = len(State.persons)
 		fellow.save_state()
 		fellow_1 = Fellow("LIOZ", "SIDH", "8483874855", "Y")
