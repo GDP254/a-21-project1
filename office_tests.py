@@ -112,17 +112,17 @@ class TestOffice(TestCase):
 		self.assertEquals(result, "Sorry the Dojo is at capacity")
 
 	def test_assign_new_staff_space(self):
-		staff = Staff("Neritus", "Otieno", "0784334123",)
+		staff = Staff("Neritus", "Otieno", "0784334123")
 		result = Office.assign(staff)
 		self.assertIsInstance(result, Office)
 
 	def test_assign_existing_staff_space(self):
-		staff = Staff("Nerits", "Oteno", "0784334523",)
+		staff = Staff("Nerits", "Oteno", "0784334523")
 		result = Office.assign(staff)
 		self.assertEquals(result, "Staff already has an office")
 
 	def test_assign_staff_no_space(self):
-		staff = Staff("Neris", "Oten", "0784334623",)
+		staff = Staff("Neris", "Oten", "0784334623")
 		result = Office.assign(staff)
 		self.assertEquals(result, "Sorry the Dojo is at capacity")
 
