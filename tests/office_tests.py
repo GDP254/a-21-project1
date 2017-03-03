@@ -86,35 +86,6 @@ class TestOffice(TestCase):
 		self.assertNotIsInstance(office, LivingSpace)
 
 	"""
-		Grouping: Save state tests
-		Description: The following tests confirm the save_state method of the
-					class Office is functioning properly
-	"""
-
-	def test_save_state_room_exists_error(self):
-		office = Office('Nderi')
-		office.save_state()
-		office_1 = Office('Nderi')
-		with self.assertRaises(ValueError):
-			office_1.save_state()
-
-	def test_save_state_room_exists(self):
-		office = Office('Nderitu')
-		initial_room_count = len(State.rooms)
-		office.save_state()
-		office_1 = Office('Nderitu')
-		office_1.save_state()
-		new_room_count = len(State.rooms)
-		self.assertEquals(initial_room_count, new_room_count)
-
-	def test_save_state_new_room(self):
-		office = Office("Standard")
-		initial_room_count = len(State.rooms)
-		office.save_state()
-		new_room_count = len(State.rooms)
-		self.assertEquals(initial_room_count + 1, new_room_count)
-
-	"""
 		Grouping: Assign tests
 		Description: The following tests confirm the assign method of the
 					class Assign is functioning properly
