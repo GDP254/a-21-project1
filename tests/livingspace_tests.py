@@ -86,35 +86,6 @@ class TestLivingSpace(TestCase):
 		self.assertNotIsInstance(livingspace, Office)
 
 	"""
-		Grouping: Save state tests
-		Description: The following tests confirm the save_state method of the
-					class Livingspace is functioning properly
-	"""
-
-	def test_save_state_room_exists_error(self):
-		livingspace = LivingSpace('Nderi')
-		livingspace.save_state()
-		livingspace_1 = LivingSpace('Nderi')
-		with self.assertRaises(ValueError):
-			livingspace_1.save_state()
-
-	def test_save_state_room_exists(self):
-		livingspace = LivingSpace('Nderitu')
-		initial_room_count = len(State.rooms)
-		livingspace.save_state()
-		livingspace_1 = LivingSpace('Nderitu')
-		livingspace = LivingSpace_1.save_state()
-		new_room_count = len(State.rooms)
-		self.assertEquals(initial_room_count, new_room_count)
-
-	def test_save_state_new_room(self):
-		livingspace = LivingSpace("Standard")
-		initial_room_count = len(State.rooms)
-		livingspace.save_state()
-		new_room_count = len(State.rooms)
-		self.assertEquals(initial_room_count + 1, new_room_count)
-
-	"""
 		Grouping: Assign tests
 		Description: The following tests confirm the assign method of the
 					class Livingspace is functioning properly
