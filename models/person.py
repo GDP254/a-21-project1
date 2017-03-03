@@ -7,8 +7,8 @@ They can have unique phone numbers, two names and a indicator of type
 
 class Person(object):
 
-	f_name
-	l_name
+	first_name
+	last_name
 	phone
 	type_
 	__all_ = set([])
