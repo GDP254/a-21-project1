@@ -11,5 +11,9 @@ class Fellow(object):
 		pass
 
 	@staticmethod
-	def find(cls, felloe):
+	def has(cls, fellow):
+		pass
+
+	@staticmethod
+	def all(cls):
 		pass

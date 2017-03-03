@@ -21,5 +21,9 @@ class Person(object):
 		pass
 
 	@staticmethod
-	def find(cls, person):
+	def has(cls, person):
+		pass
+
+	@staticmethod
+	def all(cls):
 		pass

@@ -11,5 +11,9 @@ class Staff(object):
 		pass
 
 	@staticmethod
-	def find(cls, staff):
+	def has(cls, staff):
+		pass
+
+	@staticmethod
+	def all(cls):
 		pass
