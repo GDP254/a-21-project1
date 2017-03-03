@@ -23,7 +23,7 @@ class TestFellow(TestCase):
 
 	def test_has_choice(self):
 		fellow = Fellow("Randode", "Direde", "0794838434", "N")
-		self.assertEquals(fellow.choice, "N")
+		self.assertEquals(fellow.opt_in, "N")
 
 	"""
 		Grouping: Constructor input tests
@@ -77,33 +77,46 @@ class TestFellow(TestCase):
 		self.assertEquals([fellow.first_name, fellow.second_name, fellow.phone, fellow.choice], ["Lolz", "Skid", "8483774855", "Y"])
 
 	"""
-		Grouping: Save state tests
+		Grouping: Register tests
 		Description: The following tests confirm the save_state method of the
 					class Fellow is functioning properly
 	"""
 	
-	def test_save_state_phone_exists_error(self):
+	def test_find_phone_exists_error(self):
 		fellow = Fellow("LIOLZ", "SKIDH", "8483774855", "Y")
-		fellow.save_state()
+		fellow.register()
+		f = Fellow.has(fellow)
+		p = Person.has(fellow)
+		self.assertEquals([True, True], [f, p])
+
+	def test_register_phone_exists_error(self):
+		fellow = Fellow("LIOLZ", "SKIDH", "8483774855", "Y")
+		fellow.register(fellow)
 		fellow_1 = Fellow("LIOZ", "SIDH", "8483774855", "Y")
 		with self.assertRaises(ValueError):
-			fellow_1.save_state()
+			fellow_1.register(fellow)
 
-	def test_save_state_phone_exists(self):
+	def test_register_phone_exists(self):
 		fellow = Fellow("LIOLZ", "SKIDH", "8483874855", "Y")
-		initial_person_count = len(State.persons)
-		fellow.save_state()
+		initial_person_count = len(Person.all())
+		initial_fellow_count = len(Fellow.all())
+		Fellow.register(fellow)
 		fellow_1 = Fellow("LIOZ", "SIDH", "8483874855", "Y")
-		fellow_1.save_state()
-		new_person_count = len(State.persons)
-		self.assertEquals(initial_person_count, new_person_count)
+		Fellow.register(fellow_1)
+		new_person_count = len(Person.all())
+		new_fellow_count = len(Fellow.all())
+		self.assertEquals([initial_person_count, initial_fellow_count], 
+							[new_person_count, new_fellow_count])
 
-	def test_save_state_new_phone(self):
+	def test_register_new_phone(self):
 		fellow = Fellow("Standard")
-		initial_person_count = len(State.persons)
-		fellow.save_state()
-		new_person_count = len(State.persons)
-		self.assertEquals(initial_person_count + 1, new_person_count)
+		initial_person_count = len(Person.all())
+		initial_fellow_count = len(Fellow.all())
+		Fellow.register(fellow)
+		new_person_count = len(Person.all())
+		new_fellow_count = len(Fellow.all())
+		self.assertEquals([initial_person_count + 1, initial_fellow_count + 1], 
+							[new_person_count, new_fellow_count])
 
 	
 if __name__ == '__main__':

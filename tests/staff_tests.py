@@ -21,10 +21,6 @@ class TestStaff(TestCase):
 		staff = Staff("Randode", "Direde", "0794838434")
 		self.assertEquals(staff.phone, "0794838434")
 
-	def test_has_choice(self):
-		staff = Staff("Randode", "Direde", "0794838434")
-		self.assertEquals(staff.choice, "N")
-
 	"""
 		Grouping: Constructor input tests
 		Description: The following tests confirm the constructor for instances of 
@@ -78,33 +74,46 @@ class TestStaff(TestCase):
 							["Lolz", "Skid", "8483774855", "Y"])
 
 	"""
-		Grouping: Save state tests
+		Grouping: Register tests
 		Description: The following tests confirm the save_state method of the
 					class Staff is functioning properly
 	"""
 
+	def test_find_phone_exists_error(self):
+		staff = Staff("LIOLZ", "SKIDH", "8483774855")
+		staff.register()
+		s = Staff.has(staff)
+		p = Person.has(staff)
+		self.assertEquals([True, True], [f, s])
+
 	def test_save_state_phone_exists_error(self):
 		staff = Staff("LIOLZ", "SKIDH", "8483774855")
-		staff.save_state()
+		staff.register(staff)
 		staff_1 = Staff("LIOZ", "SIDH", "8483774855")
 		with self.assertRaises(ValueError):
-			staff_1.save_state()
+			staff_1.register(staff)
 
 	def test_save_state_phone_exists(self):
 		staff = Staff("LIOLZ", "SKIDH", "8483874855")
-		initial_person_count = len(State.persons)
-		staff.save_state()
+		initial_person_count = len(Person.all())
+		initial_staff_count = len(Staff.all())
+		staff.register(staff)
 		staff_1 = Staff("LIOZ", "SIDH", "8483874855")
-		staff_1.save_state()
-		new_person_count = len(State.persons)
-		self.assertEquals(initial_person_count, new_person_count)
+		staff_1.register(staff)
+		new_person_count = len(Person.all())
+		new_staff_count = len(Staff.all())
+		self.assertEquals([initial_person_count, initial_staff_count], 
+							[new_person_count, new_staff_count])
 
-	def test_save_state_new_phone(self):
+	def test_register_new_phone(self):
 		staff = Staff("Standard")
-		initial_person_count = len(State.persons)
-		staff.save_state()
-		new_person_count = len(State.persons)
-		self.assertEquals(initial_person_count + 1, new_person_count)
+		initial_person_count = len(Person.all())
+		initial_staff_count = len(Staff.all())
+		staff.register(staff)
+		new_person_count = len(Person.all())
+		new_staff_count = len(Staff.all())
+		self.assertEquals([initial_person_count + 1, initial_staff_count + 1],
+							[new_person_count, new_staff_count])
 
 	
 if __name__ == '__main__':
