@@ -7,9 +7,9 @@ They can have unique names, capacity and two types
 
 class Room(object):
 
-	name
-	capacity
-	type_
+	name = None
+	capacity = None
+	type_ = None
 	allocated = set([])
 	not_allocated = set([])
 	persons = set([])

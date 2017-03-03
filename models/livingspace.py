@@ -1,3 +1,5 @@
+from models.room import Room
+
 class LivingSpace(Room):
 
 	capacity = 6

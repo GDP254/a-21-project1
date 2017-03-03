@@ -1,15 +1,20 @@
 from unittest import TestCase, main
 
+from models.dojo import Dojo
+from models.room import Room
+from models.office import Office
+from models.livingspace import LivingSpace
+
 class TestDojo(TestCase):
 
 	#Dojo should provide a count of current rooms
 	def test_room_count(self):
-		x = Dojo.room_count
-		self.assertEquals(x, len(Dojo._Dojo_rooms))
+		x = Dojo.room_count()
+		self.assertEquals(x, len(Dojo._Dojo__rooms))
 
 	#Dojo should be able check if a room exists
 	def test_find_room(self):
-		room = Room("x")
+		room = Office("x")
 		x = Dojo.has_room(room)
 		Dojo.add_room(room)
 		y = Dojo.has_room(room)
@@ -17,36 +22,36 @@ class TestDojo(TestCase):
 
 	#Dojo should be able to add new rooms
 	def test_add_new_room(self):
-		room = Room("x")
-		initial_room_count = Dojo.room_count
+		room = LivingSpace("x")
+		initial_room_count = Dojo.room_count()
 		initial_found_state = Dojo.has_room(room)
 		Dojo.add_room(room)
-		new_room_count = Dojo.room_count
-		new_found_state = Dojo.find_room(room)
+		new_room_count = Dojo.room_count()
+		new_found_state = Dojo.has_room(room)
 		self.assertEquals([new_room_count, new_found_state],
 							[initial_room_count + 1, not initial_found_state])
 
 	#Dojo should not be able to add existing rooms
 	def test_add_existing_room(self):
-		room = Room("x")
-		initial_room_count = Dojo.room_count
+		room = Office("y")
+		initial_room_count = Dojo.room_count()
 		initial_found_state = Dojo.has_room(room)
 		Dojo.add_room(room)
 		with self.assertRaises(ValueError):
 			Dojo.add_room(room)
 		new_room_count = Dojo.room_count()
-		new_found_state = Dojo.find_room("x")
+		new_found_state = Dojo.find_room("y")
 		self.assertEquals([new_room_count, new_found_state],
 							[initial_room_count, initial_found_state])
 
 	#Dojo should be able to remove rooms
 	def test_remove_existing_room(self):
-		room = Room("x")
+		room = LivingSpace("x")
 		initial_room_count = Dojo.room_count()
-		initial_found_state = Dojo.find_room("x")
+		initial_found_state = Dojo.has_room("x")
 		Dojo.remove_room(room)
 		new_room_count = Dojo.room_count()
-		new_found_state = Dojo.find_room("x")
+		new_found_state = Dojo.has_room("x")
 		self.assertEquals([new_room_count, new_found_state],
 							[initial_room_count - 1, not initial_found_state])
 

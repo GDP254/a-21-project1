@@ -12,9 +12,9 @@ class Dojo(object):
 	def __init__(self):
 		pass
 
-	@property
+	@classmethod
 	def room_count(cls):
-		pass
+		return 0
 
 	@property
 	def rooms(cls):

@@ -1,3 +1,5 @@
+from models.room import Room
+
 class Office(Room):
 
 	capacity = 4
