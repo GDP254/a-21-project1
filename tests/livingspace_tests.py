@@ -91,40 +91,44 @@ class TestLivingSpace(TestCase):
 					class Livingspace is functioning properly
 	"""
 
-	def test_assign_new_optin_fellow_space(self):
+	def test_allocate_to_new_optin_fellow_space(self):
+		livingspace = LivingSpace('Focuspoin')
 		fellow = Fellow("Neritus", "Otieno", "0784334220", "Y")
-		result = livingspace.assign(fellow)
+		result = livingspace.allocate_to(fellow)
 		self.assertIsInstance(result, Livingspace)
 
-	def test_assign_new_optout_fellow_space(self):
+	def test_allocate_to_new_optout_fellow_space(self):
+		livingspace = LivingSpace('Focuspoi')
 		fellow = Fellow("Nerits", "Oteno", "0784334221", "N")
-		result = LivingSpace.assign(fellow)
+		result = livingspace.allocate_to(fellow)
 		self.assertEquals(result, "Livingspace no necessary")
 
-	def test_assign_existing_fellow_space(self):
+	def test_allocate_to_existing_fellow_space(self):
+		livingspace = LivingSpace('Focuspo')
 		fellow = Fellow("Nerits", "Oteno", "0784334222", "N")
-		result = LivingSpace.assign(fellow)
+		result = livingspace.allocate_to(fellow)
 		self.assertEquals(result, "Fellow already has a Livingspace")
 
-	def test_assign_fellow_no_space(self):
+	def test_allocate_to_fellow_no_space(self):
+		livingspace = LivingSpace('Focusp')
 		fellow = Fellow("Neris", "Oten", "0784334223","N")
-		result = LivingSpace.assign(fellow)
+		result = livingspace.allocate_to(fellow)
 		self.assertEquals(result, "Sorry the Dojo is at capacity")
 
-	def test_assign_new_staff_space(self):
+	def test_allocate_to_new_staff_space(self):
+		livingspace = LivingSpace('Focus')
 		staff = Staff("Neritus", "Otieno", "0784334123")
-		result = LivingSpace.assign(staff)
+		result = livingspace.allocate_to(staff)
 		self.assertEquals(result, "Staff cannot be assined to a LivingSpace")
 
-	def test_assign_existing_staff_space(self):
-		staff = Staff("Nerits", "Oteno", "0784334523")
-		result = LivingSpace.assign(staff)
-		self.assertEquals(result, "Staff already has an office")
-
-	def test_assign_staff_no_space(self):
-		staff = Staff("Neris", "Oten", "0784334623")
-		result = LivingSpace.assign(staff)
-		self.assertEquals(result, "Sorry the Dojo is at capacity")
+	def test_arrogate_from_existing_fellow(self):
+		livingspace = LivingSpace('Focs')
+		fellow = Fellow("Erits", "Teno", "0785534221", "Y")
+		result_1 = livingspace.allocate_to(fellow)
+		allocated_1 = livingspace.has_person(fellow)
+		result_2 = livingspace.arrogate_from(fellow)
+		allocated_2 = livingspace.has_person(fellow)
+		self.assertEquals([allocated_1, allocated_2], [True, False])
 
 if __name__ == '__main__':
     main()
