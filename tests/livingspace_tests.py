@@ -2,6 +2,12 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase, main
 
+from models.livingspace import LivingSpace
+from models.office import Office
+from models.fellow import Fellow
+from models.staff import Staff
+from models.room import Room
+
 class TestLivingSpace(TestCase):
 
 	"""
@@ -26,10 +32,6 @@ class TestLivingSpace(TestCase):
 		Description: The following tests confirm the constructor for instances of 
 					LivingSpace respond appropriately to various input
 	"""
-
-	def test_constructor_no_argument(self):
-		with self.assertRaises(ValueError):
-			livingspace = LivingSpace()
 
 	def test_constructor_empty_string(self):
 		with self.assertRaises(ValueError):
@@ -95,7 +97,7 @@ class TestLivingSpace(TestCase):
 		livingspace = LivingSpace('Focuspoin')
 		fellow = Fellow("Neritus", "Otieno", "0784334220", "Y")
 		result = livingspace.allocate_to(fellow)
-		self.assertIsInstance(result, Livingspace)
+		self.assertIsInstance(result, LivingSpace)
 
 	def test_allocate_to_new_optout_fellow_space(self):
 		livingspace = LivingSpace('Focuspoi')
