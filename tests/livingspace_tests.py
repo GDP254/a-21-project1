@@ -7,6 +7,7 @@ from models.office import Office
 from models.fellow import Fellow
 from models.staff import Staff
 from models.room import Room
+from models.state import allocations
 
 class TestLivingSpace(TestCase):
 
@@ -15,17 +16,13 @@ class TestLivingSpace(TestCase):
 		Description: The following tests confirm that necessary attributes exist
 	"""
 
-	def test_capacity_is_four(self):
+	def test_capacity_is_six(self):
 		livingspace = LivingSpace("Rand")
-		self.assertEquals(livingspace.capacity, 4)
+		self.assertEqual(livingspace.capacity, 6)
 
 	def test_has_name(self):
 		livingspace = LivingSpace("Rando")
-		self.assertEquals(livingspace.name, "Rando")
-
-	def test_has_persons(self):
-		livingspace = LivingSpace("Rando")
-		self.assertEquals(livingspace.persons, [])
+		self.assertEqual(livingspace.name, "RANDO")
 
 	"""
 		Grouping: Constructor input tests
@@ -41,37 +38,33 @@ class TestLivingSpace(TestCase):
 		with self.assertRaises(ValueError):
 			livingspace = LivingSpace(None)
 
-	def test_constructor_special_characters(self):
-		with self.assertRaises(ValueError):
-			livingspace = LivingSpace("@*$(£&$")
-
 	def test_constructor_name_too_large(self):
 		with self.assertRaises(ValueError):
 			livingspace = LivingSpace("Theraininspainstaysmainlyontheplainwashingawaythegrain")
 
 	def test_constructor_spaced_name(self):
-		with self.assertRaises(ValueError):
-			livingspace = LivingSpace("ri ck")
+		livingspace = LivingSpace("ri ck")
+		self.assertEqual(livingspace.name, "RI_CK")
 
 	def test_constructor_positive_integer(self):
 		livingspace = LivingSpace(23)
-		self.assertEquals(livingspace.name, "23")
+		self.assertEqual(livingspace.name, "23")
 
 	def test_constructor_positive_float(self):
 		livingspace = LivingSpace(2.3)
-		self.assertEquals(livingspace.name, "2.3")
+		self.assertEqual(livingspace.name, "2.3")
 
 	def test_constructor_negative_integer(self):
 		livingspace = LivingSpace(-23)
-		self.assertEquals(livingspace.name, "23")
+		self.assertEqual(livingspace.name, "23")
 
 	def test_constructor_negative_float(self):
 		livingspace = LivingSpace(-2.3)
-		self.assertEquals(livingspace.name, "2.3")
+		self.assertEqual(livingspace.name, "2.3")
 
 	def test_constructor_capitalize(self):
-		livingspace = LivingSpace("LOLZ")
-		self.assertEquals(livingspace.name, "Lolz")
+		livingspace = LivingSpace("Lolz")
+		self.assertEqual(livingspace.name, "LOLZ")
 
 	"""
 		Grouping: Inheritance tests
@@ -88,49 +81,58 @@ class TestLivingSpace(TestCase):
 		self.assertNotIsInstance(livingspace, Office)
 
 	"""
-		Grouping: Assign tests
+		Grouping: Allocate tests
 		Description: The following tests confirm the assign method of the
 					class Livingspace is functioning properly
 	"""
 
-	def test_allocate_to_new_optin_fellow_space(self):
+	def test_allocate_to_new_fellow_space(self):
 		livingspace = LivingSpace('Focuspoin')
 		fellow = Fellow("Neritus", "Otieno", "0784334220", "Y")
-		result = livingspace.allocate_to(fellow)
-		self.assertIsInstance(result, LivingSpace)
+		result = len(allocations)
+		livingspace.allocate_to(fellow)
+		result_1 = len(allocations)
+		self.assertEqual(result+1, result_1)
 
+	"""
 	def test_allocate_to_new_optout_fellow_space(self):
 		livingspace = LivingSpace('Focuspoi')
 		fellow = Fellow("Nerits", "Oteno", "0784334221", "N")
 		result = livingspace.allocate_to(fellow)
 		self.assertEquals(result, "Livingspace no necessary")
+	"""
 
 	def test_allocate_to_existing_fellow_space(self):
 		livingspace = LivingSpace('Focuspo')
 		fellow = Fellow("Nerits", "Oteno", "0784334222", "N")
-		result = livingspace.allocate_to(fellow)
-		self.assertEquals(result, "Fellow already has a Livingspace")
+		livingspace.allocate_to(fellow)
+		with self.assertRaises(ValueError):
+			livingspace.allocate_to(fellow)
 
 	def test_allocate_to_fellow_no_space(self):
 		livingspace = LivingSpace('Focusp')
-		fellow = Fellow("Neris", "Oten", "0784334223","N")
-		result = livingspace.allocate_to(fellow)
-		self.assertEquals(result, "Sorry the Dojo is at capacity")
+		with self.assertRaises(ValueError):
+			x = 0
+			while (x <= 7):
+				suffix = str(x)
+				fellow = Fellow("Neris"+suffix, "Oten"+suffix, "078433448"+suffix,"N")
+				livingspace.allocate_to(fellow)
+				x += 1
 
 	def test_allocate_to_new_staff_space(self):
 		livingspace = LivingSpace('Focus')
 		staff = Staff("Neritus", "Otieno", "0784334123")
-		result = livingspace.allocate_to(staff)
-		self.assertEquals(result, "Staff cannot be assined to a LivingSpace")
+		with self.assertRaises(TypeError):
+			result = livingspace.allocate_to(staff)
 
 	def test_arrogate_from_existing_fellow(self):
 		livingspace = LivingSpace('Focs')
-		fellow = Fellow("Erits", "Teno", "0785534221", "Y")
-		result_1 = livingspace.allocate_to(fellow)
-		allocated_1 = livingspace.has_person(fellow)
-		result_2 = livingspace.arrogate_from(fellow)
-		allocated_2 = livingspace.has_person(fellow)
-		self.assertEquals([allocated_1, allocated_2], [True, False])
+		fellow = Fellow("Erits", "Teno", "0785534224", "Y")
+		livingspace.allocate_to(fellow)
+		allocated_1 = livingspace.has_allocation(fellow)
+		livingspace.arrogate_from(fellow)
+		allocated_2 = livingspace.has_allocation(fellow)
+		self.assertEqual([allocated_1, allocated_2], [True, False])
 
 if __name__ == '__main__':
     main()
