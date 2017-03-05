@@ -10,7 +10,7 @@ They can have unique names, capacity and two types
 class Room(object):
 
 	name = "Room"
-	capacity = 6
+	capacity = 0
 	type_ = "Room"
 	allocated = set([])
 	not_allocated = set([])
