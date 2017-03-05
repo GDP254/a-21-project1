@@ -5,3 +5,5 @@ allocations = []
 allocations_set = set()
 allocations_name_type = []
 
+persons_detail = {}
+persons_phone = set()

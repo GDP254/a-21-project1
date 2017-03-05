@@ -30,14 +30,6 @@ class Room(object):
 		name = name.upper()
 		self.name = name
 
-	@property
-	def available_room_count(self):
-		pass
-
-	@property
-	def not_available_room_count(self):
-		pass
-
 	def allocate_to(self, person):
 		self.filter(person)
 		if self.has_allocation(person):
