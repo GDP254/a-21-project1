@@ -14,21 +14,21 @@ class Person(object):
 	phone = None
 	type_ = "Person"
 
-	def __init__(self, f_name, l_name, phone, opt_in="N"):
-		input_ = [f_name, l_name, phone, opt_in]
+	def __init__(self, first_name, last_name, phone, opt_in="N"):
+		input_ = [first_name, last_name, phone, opt_in]
 		if "" or None in input_:
 			raise ValueError("Please enter required information correctly and in full")
-		f_name = str(f_name)
-		l_name = str(l_name)
-		names = [f_name, l_name]
+		first_name = str(first_name)
+		last_name = str(last_name)
+		names = [first_name, last_name]
 		for name in names:
 			if len(name) > 25:
 				raise ValueError("Name too long. Please enter a shorter name")
-		u = 0
-		while u <= 1:
-			names[u] = names[u].replace(" ", "")
-			names[u] = names[u].upper()
-			u += 1
+		name_index = 0
+		while name_index <= 1:
+			names[name_index] = names[name_index].replace(" ", "")
+			names[name_index] = names[name_index].upper()
+			name_index += 1
 		self.first_name = names[0]
 		self.last_name = names[1]
 		self.phone = str(phone)
