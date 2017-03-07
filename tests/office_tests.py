@@ -4,6 +4,7 @@ from unittest import TestCase, main
 
 from models.office import Office
 from models.livingspace import LivingSpace
+from models.person import Person
 from models.fellow import Fellow
 from models.staff import Staff
 from models.room import Room
@@ -11,6 +12,23 @@ from models.state import allocations
 from models.dojo import Dojo
 
 class TestOffice(TestCase):
+
+	def test_available_office(self):
+		result = Office.available()
+		office = Office('MyO55e89')
+		Office.add(office)
+		staff = Staff("staff"+"Njsiritus", "staff"+"Otsdeno", "0700000537", "Y")
+		office.allocate_to(staff)
+		staff = Staff("staff"+"Njsiritus", "staff"+"Otsdeno", "0700001537", "Y")
+		office.allocate_to(staff)
+		result_2 = Office.available()
+		staff = Staff("staff"+"Njsiritus", "staff"+"Otsdeno", "0700002537", "Y")
+		office.allocate_to(staff)
+		staff = Staff("staff"+"Njsiritus", "staff"+"Otsdeno", "0700003537", "Y")
+		office.allocate_to(staff)
+		result_3 = Office.available()
+		self.assertTrue([result, result_3, type(result_2)],
+						 [False, False, "set"])
 
 	"""
 		Grouping: Inheritance tests
@@ -102,6 +120,7 @@ class TestOffice(TestCase):
 		print(Office.rooms())
 		self.assertEqual([initial_room_count-1, initial_office_count-1],
 						 [new_room_count, new_office_count])
+
 
 if __name__ == '__main__':
     main()

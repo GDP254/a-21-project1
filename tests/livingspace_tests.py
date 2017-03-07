@@ -12,6 +12,27 @@ from models.dojo import Dojo
 
 class TestLivingSpace(TestCase):
 
+	def test_available_livingspace(self):
+		result = LivingSpace.available()
+		livingspace  = LivingSpace('MyO55e80')
+		LivingSpace.add(livingspace)
+		fellow = Fellow("staff"+"Njsiritus", "staff"+"Otsdeno", "0700004537", "Y")
+		livingspace.allocate_to(fellow)
+		fellow = Fellow("staff"+"Njsiritus", "staff"+"Otsdeno", "0700005537", "Y")
+		livingspace.allocate_to(fellow)
+		fellow = Fellow("staff"+"Njsiritus", "staff"+"Otsdeno", "0700006537", "Y")
+		livingspace.allocate_to(fellow)
+		result_2 = LivingSpace.available()
+		fellow = Fellow("staff"+"Njsiritus", "staff"+"Otsdeno", "0700007537", "Y")
+		livingspace.allocate_to(fellow)
+		fellow = Fellow("staff"+"Njsiritus", "staff"+"Otsdeno", "0700008537", "Y")
+		livingspace.allocate_to(fellow)
+		fellow = Fellow("staff"+"Njsiritus", "staff"+"Otsdeno", "0700009537", "Y")
+		livingspace.allocate_to(fellow)
+		result_3 = LivingSpace.available()
+		self.assertTrue([result, result_3, type(result_2)],
+						 [False, False, "set"])
+
 	"""
 		Grouping: Attribute tests
 		Description: The following tests confirm that necessary attributes exist
