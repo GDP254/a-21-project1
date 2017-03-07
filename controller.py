@@ -1,3 +1,5 @@
+import random
+
 from models.person import Person
 from models.fellow import Fellow
 from models.staff import Staff
@@ -35,9 +37,34 @@ def add_person(first_name, last_name, phone, type_, opt_in="N"):
 		if type_ == "FELLOW":
 			fellow = Fellow(first_name, last_name, phone, opt_in)
 			fellow.register()
+			available_offices = Office.available() 
+			if available_offices is False:
+				print("There are currently no available offices")
+			else:
+				selection = random.choice(available_offices)
+				office = Office(selection)
+				office.allocate_to(fellow)
+				print("Fellow: %s allocated to Office room: %s" % (fellow.name, office.name))
+			if opt_in == "Y":
+				available_livingspaces = LivingSpace.available()
+				if available_livingspaces is False:
+					print("There are currently no available living spaces")
+				else:
+					selection = random.choice(available_livingspaces)
+					livingspace = LivingSpace(selection)
+					livingspace.allocate_to(fellow)
+					print("Fellow: %s allocated to Living space room: %s" % (fellow.last_name, livingspace.name))
 		elif type_ == "STAFF":
 			staff = Staff(first_name, last_name, phone, opt_in)
 			staff.register()
+			available_offices = Office.available() 
+			if available_offices is False:
+				print("There are currently no available offices")
+			else:
+				selection = random.choice(available_offices)
+				office = Office(selection)
+				office.allocate_to(staff)
+				print("Staff: %s allocated to Office room: %s" % (fellow.last_name, office.name))
 		print("Person added")
 		print(persons_detail)
 	except Exception as e:

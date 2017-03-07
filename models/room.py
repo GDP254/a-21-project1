@@ -12,9 +12,6 @@ class Room(object):
 	name = "Room"
 	capacity = 0
 	type_ = "Room"
-	allocated = set([])
-	not_allocated = set([])
-	#persons = set([])
 
 	def __init__(self, name):
 		if isinstance(name, float) or isinstance(name, int):
