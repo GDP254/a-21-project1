@@ -8,6 +8,7 @@ from models.fellow import Fellow
 from models.staff import Staff
 from models.room import Room
 from models.state import allocations
+from models.dojo import Dojo
 
 class TestLivingSpace(TestCase):
 
@@ -133,6 +134,35 @@ class TestLivingSpace(TestCase):
 		livingspace.arrogate_from(fellow)
 		allocated_2 = livingspace.has_allocation(fellow)
 		self.assertEqual([allocated_1, allocated_2], [True, False])
+
+	def test_add_living_space(self):
+		livingspace = LivingSpace('MySpace78')
+		initial_room_count = len(Dojo.rooms())
+		initial_livingspace_count = len(LivingSpace.rooms())
+		LivingSpace.add(livingspace)
+		new_room_count = len(Dojo.rooms())
+		new_livingspace_count = len(LivingSpace.rooms())
+		self.assertEqual([initial_room_count+1, initial_livingspace_count+1],
+						 [new_room_count, new_livingspace_count])
+
+	def test_add_an_existing_living_space(self):
+		livingspace = LivingSpace('MySpace4545')
+		LivingSpace.add(livingspace)
+		with self.assertRaises(ValueError):
+			LivingSpace.add(livingspace)
+	
+	def test_remove_living_space(self):
+		livingspace = LivingSpace('MySpace89')
+		LivingSpace.add(livingspace)
+		initial_room_count = len(Dojo.rooms())
+		initial_livingspace_count = len(LivingSpace.rooms())
+		print(LivingSpace.rooms())
+		LivingSpace.remove(livingspace)
+		new_room_count = len(Dojo.rooms())
+		new_livingspace_count = len(LivingSpace.rooms())
+		print(LivingSpace.rooms())
+		self.assertEqual([initial_room_count-1, initial_livingspace_count-1],
+						 [new_room_count, new_livingspace_count])
 
 if __name__ == '__main__':
     main()

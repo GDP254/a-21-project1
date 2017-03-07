@@ -13,8 +13,8 @@ class LivingSpace(Room):
 		cls.filter_livingspace(livingspace)
 		Dojo.add_room(livingspace)
 		cls.__livingspaces.update({livingspace.name: 
-									[{capacity: livingspace.capacity}, 
-										{type_: livingspace.type_}]})
+									[{"capacity": livingspace.capacity}, 
+										{"type_": livingspace.type_}]})
 
 	@classmethod
 	def remove(cls, livingspace):

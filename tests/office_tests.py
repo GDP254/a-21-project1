@@ -8,6 +8,7 @@ from models.fellow import Fellow
 from models.staff import Staff
 from models.room import Room
 from models.state import allocations
+from models.dojo import Dojo
 
 class TestOffice(TestCase):
 
@@ -72,6 +73,35 @@ class TestOffice(TestCase):
 		office.arrogate_from(staff)
 		allocated_2 = office.has_allocation(staff)
 		self.assertEqual([allocated_1, allocated_2], [True, False])
+
+	def test_add_office(self):
+		office = Office('MyOffice78')
+		initial_room_count = len(Dojo.rooms())
+		initial_office_count = len(Office.rooms())
+		Office.add(office)
+		new_room_count = len(Dojo.rooms())
+		new_office_count = len(Office.rooms())
+		self.assertEqual([initial_room_count+1, initial_office_count+1],
+						 [new_room_count, new_office_count])
+
+	def test_add_an_existing_office(self):
+		office = Office('MyOffice4545')
+		Office.add(office)
+		with self.assertRaises(ValueError):
+			Office.add(office)
+	
+	def test_remove_office(self):
+		office = Office('MyOffice89')
+		Office.add(office)
+		initial_room_count = len(Dojo.rooms())
+		initial_office_count = len(Office.rooms())
+		print(Office.rooms())
+		Office.remove(office)
+		new_room_count = len(Dojo.rooms())
+		new_office_count = len(Office.rooms())
+		print(Office.rooms())
+		self.assertEqual([initial_room_count-1, initial_office_count-1],
+						 [new_room_count, new_office_count])
 
 if __name__ == '__main__':
     main()
