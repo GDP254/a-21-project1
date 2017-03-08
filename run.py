@@ -58,13 +58,11 @@ class MyInteractive (cmd.Cmd):
     @docopt_cmd
     def do_create_room(self, arg):
         """Usage: create_room (<room_type> <room_name>)..."""
-        print(arg)
         create_room(arg['<room_name>'], arg['<room_type>'])
 
     @docopt_cmd
     def do_add_person(self, arg):
         """Usage: add_person (<person_first_name> <person_last_name> <person_phone> <person_type>) [<wants_accommodation>]"""
-        print(arg)
         add_person(arg['<person_first_name>'], 
                   arg['<person_last_name>'], 
                   arg['<person_phone>'], 
