@@ -1,10 +1,10 @@
 """Occupancy Manager
 
 Usage:
-  run2.py create_room (<room_type> <room_name>)...
-  run2.py add_person (<person_first_name> <person_last_name> <person_phone> <person_type>) [<wants_accommodation>]
-  run2.py (-i | --interactive)
-  run2.py (-h | --help)
+  run.py create_room (<room_type> <room_name>)...
+  run.py add_person (<person_first_name> <person_last_name> <person_phone> <person_type>) [<wants_accommodation>]
+  run.py (-i | --interactive)
+  run.py (-h | --help)
 
 Options:
     -i, --interactive  Interactive Mode
@@ -52,7 +52,7 @@ def docopt_cmd(func):
 class MyInteractive (cmd.Cmd):
     intro = 'Welcome to Dojo Occupancy Manager!' \
         + ' (type help for a list of commands.)'
-    prompt = '(run2.py) '
+    prompt = '(run.py) '
     file = None
 
     @docopt_cmd
@@ -65,11 +65,11 @@ class MyInteractive (cmd.Cmd):
     def do_add_person(self, arg):
         """Usage: add_person (<person_first_name> <person_last_name> <person_phone> <person_type>) [<wants_accommodation>]"""
         print(arg)
-        add_person(arguments['<person_first_name>'], 
-                  arguments['<person_last_name>'], 
-                  arguments['<person_phone>'], 
-                  arguments['<person_type>'], 
-                  arguments['<wants_accommodation>'])
+        add_person(arg['<person_first_name>'], 
+                  arg['<person_last_name>'], 
+                  arg['<person_phone>'], 
+                  arg['<person_type>'], 
+                  arg['<wants_accommodation>'])
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
