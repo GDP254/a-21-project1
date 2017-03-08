@@ -45,7 +45,7 @@ def add_person(first_name, last_name, phone, type_, opt_in="N"):
 				office = Office(selection)
 				office.allocate_to(fellow)
 				print("Fellow: %s allocated to Office room: %s" % (fellow.last_name, office.name))
-			if opt_in == "Y":
+			if fellow.opt_in == "Y":
 				available_livingspaces = LivingSpace.available()
 				if available_livingspaces is False:
 					print("There are currently no available living spaces")
