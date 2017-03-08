@@ -41,16 +41,16 @@ def add_person(first_name, last_name, phone, type_, opt_in="N"):
 			if available_offices is False:
 				print("There are currently no available offices")
 			else:
-				selection = random.choice(available_offices)
+				selection = random.choice(list(available_offices))
 				office = Office(selection)
 				office.allocate_to(fellow)
-				print("Fellow: %s allocated to Office room: %s" % (fellow.name, office.name))
+				print("Fellow: %s allocated to Office room: %s" % (fellow.last_name, office.name))
 			if opt_in == "Y":
 				available_livingspaces = LivingSpace.available()
 				if available_livingspaces is False:
 					print("There are currently no available living spaces")
 				else:
-					selection = random.choice(available_livingspaces)
+					selection = random.choice(list(available_livingspaces))
 					livingspace = LivingSpace(selection)
 					livingspace.allocate_to(fellow)
 					print("Fellow: %s allocated to Living space room: %s" % (fellow.last_name, livingspace.name))
@@ -61,7 +61,7 @@ def add_person(first_name, last_name, phone, type_, opt_in="N"):
 			if available_offices is False:
 				print("There are currently no available offices")
 			else:
-				selection = random.choice(available_offices)
+				selection = random.choice(list(available_offices))
 				office = Office(selection)
 				office.allocate_to(staff)
 				print("Staff: %s allocated to Office room: %s" % (fellow.last_name, office.name))
