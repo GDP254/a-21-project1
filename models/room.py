@@ -69,3 +69,50 @@ class Room(object):
 	def filter(self, person):
 		if not isinstance(person, Person):
 			raise TypeError("Only type Person allowed")
+
+	def allocations(self):
+		"""To Do
+
+		Ensure the current instance exists
+
+		Retrieve allocations whose first value matches 
+		the name of the current instance
+		"""
+		pass
+
+	@classmethod
+	def all_allocations(cls):
+		"""To Do
+
+		Retrieve all allocations
+		call members function with allcoation as argument
+		"""
+		pass
+
+	@classmethod
+	def all_unallocated(cls):
+		"""To Do
+
+		compare set of allocated to complete set of persons
+		set of those who are not in the set of allocated persons
+		"""
+		pass
+
+	@classmethod
+	def members(cls, allocations, tag=None):
+		"""To Do
+
+		For each allocation:
+			Create a new instance of person
+			print person information presentably
+			e.g. tag (if not None), Phone, Last name, First Name, Fellow/Staff
+		"""
+		pass
+
+	@classmethod
+	def clear(cls):
+		"""To Do
+
+		Clear all data stores relevant to rooms for testing purposes
+		"""
+		pass

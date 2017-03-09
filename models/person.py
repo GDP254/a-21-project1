@@ -35,6 +35,15 @@ class Person(object):
 		self.phone = str(phone)
 		self.opt_in = opt_in
 
+	#alternate constructor
+	@staticmethod
+	def from_phone(cls, phone):
+		"""To Do
+
+		Retrieve detail recor of phone and initialize based on the information
+		"""
+		pass
+
 	def register(self):
 		if self.registered():
 			raise ValueError("Specifed phone is already registered")
@@ -48,6 +57,10 @@ class Person(object):
 			return True
 		return False
 
-	@staticmethod
-	def all(cls):
+	@classmethod
+	def clear(cls):
+		"""To Do
+
+		Clear all data stores relevant to persons for testing purposes
+		"""
 		pass

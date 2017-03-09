@@ -42,3 +42,11 @@ class Dojo(object):
 	def filter(cls, room):
 		if not isinstance(room, Room):
 			raise TypeError("The Dojo only contains rooms")
+
+	@classmethod
+	def clear(cls):
+		"""To Do
+
+		Clear all rooms in dojo for testing purposes
+		"""
+		pass
