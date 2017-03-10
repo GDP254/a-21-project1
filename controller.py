@@ -9,6 +9,13 @@ from models.livingspace import LivingSpace
 from models.dojo import Dojo
 from models.state import persons_phone, persons_detail
 
+def print_room(room_name):
+	try:
+		room = Room(room_name)
+		print(room.allocations())
+	except Exception as e:
+		print(str(e))
+
 def create_room(room_name, room_type):
 	try:
 		room_input_index = 0

@@ -3,6 +3,7 @@
 Usage:
   run.py create_room (<room_type> <room_name>)...
   run.py add_person (<person_first_name> <person_last_name> <person_phone> <person_type>) [<wants_accommodation>]
+  run.py print_room (<room_name>)
   run.py (-i | --interactive)
   run.py (-h | --help)
 
@@ -16,7 +17,7 @@ import sys
 import cmd
 from docopt import docopt, DocoptExit
 
-from controller import create_room, add_person
+from controller import create_room, add_person, print_room
 
 def docopt_cmd(func):
     """
@@ -68,6 +69,12 @@ class MyInteractive (cmd.Cmd):
                   arg['<person_phone>'], 
                   arg['<person_type>'], 
                   arg['<wants_accommodation>'])
+
+    @docopt_cmd
+    def do_print_room(self, arg):
+        """Usage: print_room (<room_name>)"""
+        print(arg)
+        print_room(arg['<room_name>'])
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
