@@ -1,5 +1,6 @@
 from models.person import Person
-from models.state import allocations, allocations_set, allocations_name_type
+from models.state import allocations, allocations_set, allocations_name_type, persons_detail, persons_phone
+
 """Narrative
 
 Rooms are spaces within the Dojo.
@@ -78,28 +79,103 @@ class Room(object):
 		Retrieve allocations whose first value matches 
 		the name of the current instance
 		"""
-		pass
+
+		if len(allocations) > 0:
+			output = []
+			for column in allocations:
+				name = column[0]
+				if name == self.name:
+					output.append(column)
+			return output
+		else:
+			raise Exception("%s has no persons allocated." % self.name)
 
 	@classmethod
 	def all_allocations(cls):
 		"""To Do
 
 		Retrieve all allocations
-		call members function with allcoation as argument
+		call members function with allocation as argument
 		"""
-		pass
+
+		return allocations
 
 	@classmethod
-	def all_unallocated(cls):
+	def all_allocated_phones(cls):
+		"""To Do
+
+		Retrieve all unique phone numbers in allocations
+		"""
+
+		output = []
+		for column in allocations:
+			phone = column[2]
+			output.append(phone)
+		output = set(output)
+		return output
+
+	@classmethod
+	def all_unallocated_phones(cls):
 		"""To Do
 
 		compare set of allocated to complete set of persons
 		set of those who are not in the set of allocated persons
 		"""
-		pass
+
+		allocated = cls.all_allocated_phones()
+		all_ = persons_phone
+		unallocated = all_ - allocated
+		return unallocated
 
 	@classmethod
-	def members(cls, allocations, tag=None):
+	def all_allocated_persons(cls):
+		phones = cls.all_allocated_persons()
+		for phone in phones:
+			detail = persons_detail[phone]
+			first_name = detail[0]
+			last_name = detail[1]
+			type_ = detail[2]
+			opt_in = detail[3]
+			output = "%s, %s, %s, %s" % (phone, last_name, first_name, type_)
+			print(output)
+			return output
+
+	@classmethod
+	def all_unallocated_persons(cls):
+		"""To Do
+
+		Retrieve all unique phone numbers in allocations
+		"""
+
+		phones = cls.all_unallocated_phones()
+		for phone in phones:
+			detail = persons_detail[phone]
+			first_name = detail[0]
+			last_name = detail[1]
+			type_ = detail[2]
+			opt_in = detail[3]
+			output = "%s, %s, %s, %s" % (phone, last_name, first_name, type_)
+			print(output)
+			return output
+
+	@classmethod
+	def all_unallocated_rooms(cls):
+		output = []
+		for column in allocations:
+			name = column[0]
+			output.append(name)
+		output = set(output)
+		return output
+
+	@classmethod
+	def all_unallocated_rooms(cls):
+		allocated = cls.all_allocated_rooms()
+		all_ = Dojo.rooms()
+		unallocated = all_ - allocated
+		return unallocated
+
+	@classmethod
+	def members(cls, allocations_, room_tag=False):
 		"""To Do
 
 		For each allocation:
@@ -107,7 +183,29 @@ class Room(object):
 			print person information presentably
 			e.g. tag (if not None), Phone, Last name, First Name, Fellow/Staff
 		"""
-		pass
+		
+		for column in allocations_:
+			room_name = column[0]
+			room_type = column[1]
+			phone = column[2]
+			detail = persons_detail[phone]
+			first_name = detail[0]
+			last_name = detail[1]
+			type_ = detail[2]
+			opt_in = detail[3]
+			output = None
+			if room_tag is False:
+				output = "%s, %s, %s, %s" % (phone, last_name, first_name, type_)
+			else:
+				output = "%s-%s, %s, %s, %s, %s" % (room_name, room_type, phone, last_name, first_name, type_)
+			print(output)
+			return output
+
+	@classmethod
+	def to_file(cls, content):
+		f = open("file.txt", "w")
+		f.write(content)
+		f.close()
 
 	@classmethod
 	def clear(cls):
@@ -115,4 +213,7 @@ class Room(object):
 
 		Clear all data stores relevant to rooms for testing purposes
 		"""
-		pass
+		
+		del allocations[:]
+		allocations_set.clear()
+		del allocations_name_type[:]

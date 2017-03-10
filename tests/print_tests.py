@@ -26,8 +26,8 @@ class TestPrint(TestCase):
 	def test_print_empty_room(self):
 		self.clear_stores()
 		livingspace = LivingSpace("NDO1")
-		output = livingspace.allocations()
-		self.assertEquals(output, "%s currently has no members." % livingspace.name)
+		with self.assertRaises(Exception):
+			output = livingspace.allocations()
 
 	def test_print_existing_allocations_to_screen(self):
 		self.clear_stores()
@@ -36,10 +36,25 @@ class TestPrint(TestCase):
 		fellow = Fellow("Xone2", "Ndobile2", "0856443324", "y")
 		fellow.register()
 		office.allocate_to(fellow)
-		allocations = Room.all_allocations()
-		output = Room.members(allocations)
-		expected_output = "ND02, 0856443324, NDOBILE2, XONE2, FELLOW"
-		self.assertEquals(output, expected_output)
+		allocations_ = Room.all_allocations()
+		output = Room.members(allocations_, room_tag=True)
+		expected_output = "NDO2-Office, 0856443324, NDOBILE2, XONE2, FELLOW"
+		self.assertEqual(output, expected_output)
+
+	def test_print_existing_allocations_to_file(self):
+		self.clear_stores()
+		office = Office("ND2")
+		Dojo.add_room(office)
+		fellow = Fellow("Xne2", "Ndoile2", "0868443324", "y")
+		fellow.register()
+		office.allocate_to(fellow)
+		allocations_ = Room.all_allocations()
+		expected_output = Room.members(allocations_, room_tag=True)
+		Room.to_file(expected_output)
+		f = open("file.txt", "r")
+		output = f.read() #"NDO2-Office, 0856443324, NDOBILE2, XONE2, FELLOW"
+		f.close()
+		self.assertEqual(expected_output, output)
 
 	def test_print_existing_unallocated_to_screen(self):
 		self.clear_stores()
@@ -50,10 +65,9 @@ class TestPrint(TestCase):
 		office.allocate_to(fellow)
 		staff = Staff("Xone3", "Ndobile3", "0856443344", "y")
 		staff.register()
-		unallocated = Room.all_unallocated()
-		output = Room.members(unallocated)
+		output = Room.all_unallocated_persons()
 		expected_output = "0856443344, NDOBILE3, XONE3, STAFF"
-		self.assertEquals(output, expected_output)
+		self.assertEqual(output, expected_output)
 
 	def clear_stores(self):
 		#Clean data stores to run print tests

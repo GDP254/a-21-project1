@@ -49,4 +49,5 @@ class Dojo(object):
 
 		Clear all rooms in dojo for testing purposes
 		"""
-		pass
+
+		cls.__rooms.clear()

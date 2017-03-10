@@ -42,7 +42,18 @@ class Person(object):
 
 		Retrieve detail recor of phone and initialize based on the information
 		"""
-		pass
+		
+		if phone in persons_phone:
+			info = persons_detail[phone]
+			first_name = info[0]
+			last_name = info[1]
+			type_ = info[2]
+			opt_in = info[3]
+			person = Person(first_name, last_name, phone, opt_in)
+			person.type_ = type_
+			return person
+		else:
+			raise ValueError("Specified phone does not exist")
 
 	def register(self):
 		if self.registered():
@@ -50,7 +61,8 @@ class Person(object):
 		persons_phone.add(self.phone)
 		persons_detail.update ({self.phone:[self.first_name, 
 									self.last_name, 
-									self.type_]})
+									self.type_,
+									self.opt_in]})
 
 	def registered(self):
 		if self.phone in persons_phone:
@@ -63,4 +75,6 @@ class Person(object):
 
 		Clear all data stores relevant to persons for testing purposes
 		"""
-		pass
+
+		persons_detail.clear()
+		persons_phone.clear()
