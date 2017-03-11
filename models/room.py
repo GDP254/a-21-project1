@@ -116,29 +116,25 @@ class Room(object):
 
 	@classmethod
 	def all_unallocated_phones(cls):
-		"""To Do
-
-		compare set of allocated to complete set of persons
-		set of those who are not in the set of allocated persons
-		"""
-
 		allocated = cls.all_allocated_phones()
 		all_ = persons_phone
 		unallocated = all_ - allocated
+		#print(unallocated)
 		return unallocated
 
 	@classmethod
 	def all_allocated_persons(cls):
-		phones = cls.all_allocated_persons()
+		phones = cls.all_allocated_phones()
+		output = ""
 		for phone in phones:
 			detail = persons_detail[phone]
 			first_name = detail[0]
 			last_name = detail[1]
 			type_ = detail[2]
 			opt_in = detail[3]
-			output = "%s, %s, %s, %s" % (phone, last_name, first_name, type_)
-			print(output)
-			return output
+			output += "%s, %s, %s, %s\n" % (phone, last_name, first_name, type_)
+		#print(output)
+		return output
 
 	@classmethod
 	def all_unallocated_persons(cls):
@@ -148,15 +144,16 @@ class Room(object):
 		"""
 
 		phones = cls.all_unallocated_phones()
+		output = ""
 		for phone in phones:
 			detail = persons_detail[phone]
 			first_name = detail[0]
 			last_name = detail[1]
 			type_ = detail[2]
 			opt_in = detail[3]
-			output = "%s, %s, %s, %s" % (phone, last_name, first_name, type_)
-			print(output)
-			return output
+			output += "%s, %s, %s, %s\n" % (phone, last_name, first_name, type_)
+		#print(output)
+		return output
 
 	@classmethod
 	def all_unallocated_rooms(cls):
@@ -183,7 +180,7 @@ class Room(object):
 			print person information presentably
 			e.g. tag (if not None), Phone, Last name, First Name, Fellow/Staff
 		"""
-		
+		output = ""
 		for column in allocations_:
 			room_name = column[0]
 			room_type = column[1]
@@ -193,13 +190,12 @@ class Room(object):
 			last_name = detail[1]
 			type_ = detail[2]
 			opt_in = detail[3]
-			output = None
 			if room_tag is False:
-				output = "%s, %s, %s, %s" % (phone, last_name, first_name, type_)
+				output += "%s, %s, %s, %s\n" % (phone, last_name, first_name, type_)
 			else:
-				output = "%s-%s, %s, %s, %s, %s" % (room_name, room_type, phone, last_name, first_name, type_)
-			print(output)
-			return output
+				output += "%s-%s, %s, %s, %s, %s\n" % (room_name, room_type, phone, last_name, first_name, type_)
+		#print(output)
+		return output
 
 	@classmethod
 	def to_file(cls, content):
@@ -213,7 +209,7 @@ class Room(object):
 
 		Clear all data stores relevant to rooms for testing purposes
 		"""
-		
+
 		del allocations[:]
 		allocations_set.clear()
 		del allocations_name_type[:]

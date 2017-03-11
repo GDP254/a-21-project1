@@ -9,10 +9,20 @@ from models.livingspace import LivingSpace
 from models.dojo import Dojo
 from models.state import persons_phone, persons_detail
 
+def print_unallocated(filename):
+	output = Room.all_allocated_persons()
+	print(output)
+
+def print_allocations(filename):
+	allocations = Room.all_allocations()
+	output = Room.members(allocations, room_tag=True)
+	print(output)
+
 def print_room(room_name):
 	try:
 		room = Room(room_name)
-		print(room.allocations())
+		allocations = room.allocations()
+		print(Room.members(allocations))
 	except Exception as e:
 		print(str(e))
 
@@ -40,7 +50,6 @@ def create_room(room_name, room_type):
 def add_person(first_name, last_name, phone, type_, opt_in="N"):
 	try:
 		type_ = type_.upper()
-		print(type_)
 		if type_ == "FELLOW":
 			fellow = Fellow(first_name, last_name, phone, opt_in)
 			fellow.register()
@@ -71,7 +80,7 @@ def add_person(first_name, last_name, phone, type_, opt_in="N"):
 				selection = random.choice(list(available_offices))
 				office = Office(selection)
 				office.allocate_to(staff)
-				print("Staff: %s allocated to Office room: %s" % (fellow.last_name, office.name))
+				print("Staff: %s allocated to Office room: %s" % (staff.last_name, office.name))
 		print("Person added")
 		print(persons_detail)
 	except Exception as e:

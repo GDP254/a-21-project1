@@ -4,6 +4,8 @@ Usage:
   run.py create_room (<room_type> <room_name>)...
   run.py add_person (<person_first_name> <person_last_name> <person_phone> <person_type>) [<wants_accommodation>]
   run.py print_room (<room_name>)
+  run.py print_allocations
+  run.py print_unallocated
   run.py (-i | --interactive)
   run.py (-h | --help)
 
@@ -17,7 +19,7 @@ import sys
 import cmd
 from docopt import docopt, DocoptExit
 
-from controller import create_room, add_person, print_room
+from controller import create_room, add_person, print_room, print_allocations, print_unallocated
 
 def docopt_cmd(func):
     """
@@ -75,6 +77,18 @@ class MyInteractive (cmd.Cmd):
         """Usage: print_room (<room_name>)"""
         print(arg)
         print_room(arg['<room_name>'])
+
+    @docopt_cmd
+    def do_print_allocations(self, arg):
+        """Usage: print_allocations [-o=filename]"""
+        print(arg)
+        print_allocations(arg)
+
+    @docopt_cmd
+    def do_print_unallocated(self, arg):
+        """Usage: print_unallocated [-o=filename]"""
+        print(arg)
+        print_unallocated(arg)
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
