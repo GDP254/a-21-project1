@@ -9,14 +9,20 @@ from models.livingspace import LivingSpace
 from models.dojo import Dojo
 from models.state import persons_phone, persons_detail
 
-def print_unallocated(filename):
+def print_unallocated(out):
 	output = Room.all_allocated_persons()
-	print(output)
+	if out is True:
+		Room.to_file(output)
+	else:
+		print(output)
 
-def print_allocations(filename):
+def print_allocations(out):
 	allocations = Room.all_allocations()
 	output = Room.members(allocations, room_tag=True)
-	print(output)
+	if out is True:
+		Room.to_file(output)
+	else:
+		print(output)
 
 def print_room(room_name):
 	try:

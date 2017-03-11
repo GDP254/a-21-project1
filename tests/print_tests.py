@@ -21,7 +21,7 @@ class TestPrint(TestCase):
 		office.allocate_to(fellow)
 		allocations = office.allocations()
 		output = Room.members(allocations)
-		self.assertEquals(output, "0856443334, NDOBILE, XONE, FELLOW\n")
+		self.assertEqual(output, "0856443334, NDOBILE, XONE, FELLOW\n")
 
 	def test_print_empty_room(self):
 		self.clear_stores()
@@ -63,10 +63,13 @@ class TestPrint(TestCase):
 		fellow = Fellow("Xone4", "Ndobile4", "0856443354", "y")
 		fellow.register()
 		office.allocate_to(fellow)
-		staff = Staff("Xone3", "Ndobile3", "0856443344", "y")
-		staff.register()
+		fellow = Fellow("Xone5", "Ndobile6", "0856443009", "n")
+		fellow.register()
+		office.allocate_to(fellow)
+		fellow = Fellow("Xone3", "Ndobile3", "0856443344", "y")
+		fellow.register()
 		output = Room.all_unallocated_persons()
-		expected_output = "0856443344, NDOBILE3, XONE3, STAFF\n"
+		expected_output = "0856443344, NDOBILE3, XONE3, FELLOW\n"
 		self.assertEqual(output, expected_output)
 
 	def clear_stores(self):
