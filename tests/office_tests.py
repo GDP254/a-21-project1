@@ -17,14 +17,14 @@ class TestOffice(TestCase):
 		result = Office.available()
 		office = Office('MyO55e89')
 		Office.add(office)
-		staff = Staff("staff"+"Njsiritus", "staff"+"Otsdeno", "0700000537", "Y")
+		staff = Staff("staff"+"Njsiritus", "staff"+"Otsdeno", "0700000537")
 		office.allocate_to(staff)
-		staff = Staff("staff"+"Njsiritus", "staff"+"Otsdeno", "0700001537", "Y")
+		staff = Staff("staff"+"Njsiritus", "staff"+"Otsdeno", "0700001537")
 		office.allocate_to(staff)
 		result_2 = Office.available()
-		staff = Staff("staff"+"Njsiritus", "staff"+"Otsdeno", "0700002537", "Y")
+		staff = Staff("staff"+"Njsiritus", "staff"+"Otsdeno", "0700002537")
 		office.allocate_to(staff)
-		staff = Staff("staff"+"Njsiritus", "staff"+"Otsdeno", "0700003537", "Y")
+		staff = Staff("staff"+"Njsiritus", "staff"+"Otsdeno", "0700003537")
 		office.allocate_to(staff)
 		result_3 = Office.available()
 		self.assertTrue([result, result_3, type(result_2)],
@@ -52,7 +52,7 @@ class TestOffice(TestCase):
 
 	def test_allocate_to_new_staff_space(self):
 		office = Office("staff"+"Foin")
-		staff = Staff("staff"+"Neritus", "staff"+"Otieno", "0784334537", "Y")
+		staff = Staff("staff"+"Neritus", "staff"+"Otieno", "0784334537")
 		result = len(allocations)
 		office.allocate_to(staff)
 		result_1 = len(allocations)

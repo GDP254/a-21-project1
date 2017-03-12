@@ -15,7 +15,7 @@ class Person(object):
 	type_ = "Person"
 
 	def __init__(self, first_name, last_name, phone, opt_in="N"):
-		input_ = [first_name, last_name, phone, opt_in]
+		input_ = [first_name, last_name, phone]
 		if "" or None in input_:
 			raise ValueError("Please enter required information correctly and in full")
 		first_name = str(first_name)
