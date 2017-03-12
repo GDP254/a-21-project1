@@ -24,9 +24,9 @@ def create_room(room_name, room_type):
 				Office.add(office)
 				print("Room (Office): %s Added" % office.name)
 			room_input_index += 1
-		print(Dojo.rooms())
-		print(LivingSpace.rooms())
-		print(Office.rooms())
+		#print(Dojo.rooms())
+		#print(LivingSpace.rooms())
+		#print(Office.rooms())
 	except Exception as e:
 		print(str(e))
 
@@ -66,6 +66,6 @@ def add_person(first_name, last_name, phone, type_, opt_in="N"):
 				office.allocate_to(staff)
 				print("Staff: %s allocated to Office room: %s" % (fellow.last_name, office.name))
 		print("Person added")
-		print(persons_detail)
+		#print(persons_detail)
 	except Exception as e:
 		print(str(e))
