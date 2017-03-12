@@ -8,9 +8,11 @@ Python version: 3.5.2
 
 **Instructions**
 
-1. Clone the application.
-2. Install necessary requirements ```python pip install -r requirements.txt ```
-3. To run tests, run: ```python python tests.py ```
-4. For further instruction, run: ```python python run.py -h ```
+1. Clone the application ```git clone https://github.com/GDP254/a-21-project1.git ```
+2. Enter the directory ```cd a-21-project1 ```
+3. Install necessary requirements ```python pip install -r requirements.txt ```
+4. Make an output directory for text file reports ```mkdir output ```
+5. To run tests, run: ```python tests.py ```
+6. For further instruction, run: ```python run.py -h ```
 
 **State**: Work In Progress 
