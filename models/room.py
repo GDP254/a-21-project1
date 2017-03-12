@@ -198,8 +198,10 @@ class Room(object):
 		return output
 
 	@classmethod
-	def to_file(cls, content):
-		f = open("file.txt", "w")
+	def to_file(cls, content, name="File"):
+		path = "output/"
+		file_name = "%s.txt" % name
+		f = open(path+file_name, "w")
 		f.write(content)
 		f.close()
 
