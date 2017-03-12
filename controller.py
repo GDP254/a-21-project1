@@ -9,20 +9,36 @@ from models.livingspace import LivingSpace
 from models.dojo import Dojo
 from models.state import persons_phone, persons_detail
 
-def print_unallocated(out):
-	output = Room.all_allocated_persons()
-	if out is True:
-		Room.to_file(output)
+def print_unallocated(out, file_name):
+	output = Room.all_unallocated_persons()
+	if len(output) > 0:
+		if out is True:
+			if file_name is not None:
+				Room.to_file(output, file_name)
+				print("Unallocated persons in output/%s.txt" % file_name)
+			else:
+				Room.to_file(output)
+				print("Unallocated persons in the default output/File.txt")
+		else:
+			print(output)
 	else:
-		print(output)
+		print("There are no unallocated persons to show")
 
-def print_allocations(out):
+def print_allocations(out, file_name):
 	allocations = Room.all_allocations()
 	output = Room.members(allocations, room_tag=True)
-	if out is True:
-		Room.to_file(output)
+	if len(output) > 0:
+		if out is True:
+			if file_name is not None:
+				Room.to_file(output, file_name)
+				print("Allocated persons in output/%s.txt" % file_name)
+			else:
+				Room.to_file(output)
+				print("Allocated persons in the default output/File.txt")
+		else:
+			print(output)
 	else:
-		print(output)
+		print("There are no allocations to show")
 
 def print_room(room_name):
 	try:

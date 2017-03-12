@@ -4,14 +4,15 @@ Usage:
   run.py create_room (<room_type> <room_name>)...
   run.py add_person (<person_first_name> <person_last_name> <person_phone> <person_type>) [<wants_accommodation>]
   run.py print_room (<room_name>)
-  run.py print_allocations 
-  run.py print_unallocated
+  run.py print_allocations [(-o [<filename>])]
+  run.py print_unallocated [(-o [<filename>])]
   run.py (-i | --interactive)
   run.py (-h | --help)
 
 Options:
     -i, --interactive  Interactive Mode
     -h, --help  Show this screen and exit.
+    -o  Output to file 
 
 """
 
@@ -80,15 +81,15 @@ class MyInteractive (cmd.Cmd):
 
     @docopt_cmd
     def do_print_allocations(self, arg):
-        """Usage: print_allocations [-o=filename]"""
+        """Usage: print_allocations [(-o [<filename>])]"""
         print(arg)
-        print_allocations(arg['-o'])
+        print_allocations(arg['-o'], arg['<filename>'])
 
     @docopt_cmd
     def do_print_unallocated(self, arg):
-        """Usage: print_unallocated [-o=filename]"""
+        """Usage: print_unallocated [(-o [<filename>])]"""
         print(arg)
-        print_unallocated(arg['-o'])
+        print_unallocated(arg['-o'], arg['<filename>'])
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
