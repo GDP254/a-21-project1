@@ -76,19 +76,16 @@ class MyInteractive (cmd.Cmd):
     @docopt_cmd
     def do_print_room(self, arg):
         """Usage: print_room (<room_name>)"""
-        print(arg)
         print_room(arg['<room_name>'])
 
     @docopt_cmd
     def do_print_allocations(self, arg):
         """Usage: print_allocations [(-o [<filename>])]"""
-        print(arg)
         print_allocations(arg['-o'], arg['<filename>'])
 
     @docopt_cmd
     def do_print_unallocated(self, arg):
         """Usage: print_unallocated [(-o [<filename>])]"""
-        print(arg)
         print_unallocated(arg['-o'], arg['<filename>'])
 
     def do_quit(self, arg):

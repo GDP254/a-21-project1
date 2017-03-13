@@ -29,7 +29,8 @@ class Person(object):
 			names[name_index] = names[name_index].replace(" ", "")
 			names[name_index] = names[name_index].upper()
 			name_index += 1
-		opt_in = opt_in.upper()
+		if opt_in is not None:
+			opt_in = opt_in.upper()
 		self.first_name = names[0]
 		self.last_name = names[1]
 		self.phone = str(phone)
