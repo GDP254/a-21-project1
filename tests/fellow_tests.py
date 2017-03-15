@@ -46,7 +46,7 @@ class TestFellow(TestCase):
 
 	def test_constructor_spaced_name(self):
 		fellow = Fellow("ri ck", "Dir ede", "0794 838434", "Y")
-		self.assertEqual([fellow.first_name, fellow.last_name, fellow.phone, fellow.opt_in], ["RICK", "DIREDE", "0794 838434", "Y"])
+		self.assertEqual([fellow.first_name, fellow.last_name, fellow.phone, fellow.opt_in], ["RICK", "DIREDE", "0794838434", "Y"])
 
 	def test_constructor_upper(self):
 		fellow = Fellow("Lolz", "Skid", "8483774855", "Y")

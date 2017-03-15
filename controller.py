@@ -9,6 +9,57 @@ from models.livingspace import LivingSpace
 from models.dojo import Dojo
 from models.state import persons_phone, persons_detail
 
+def reallocate_person(phone, room_name):
+	"""
+	print("Phone::"+phone)
+	print("Room::"+room_name)
+	person = get_person(phone)
+	room = get_room(room_name)
+	Room.reallocate(person, room)
+	print("%s-%s reallocated to %s-%s" % (person.name, person.type_, room.name, room.type_))
+	"""
+	print("Work in Progess")
+	pass
+
+def get_person(phone):
+	try:
+		return Fellow.from_phone(phone)
+	except ValueError:
+		pass
+	try:
+		return Staff.from_phone(phone)
+	except ValueError:
+		raise ValueError("specifed room is unknown")
+
+def get_room(room_name):
+	try:
+		return LivingSpace.from_name(room_name)
+	except ValueError:
+		pass
+	try:
+		return Office.from_name(room_name)
+	except ValueError:
+		raise ValueError("specifed room is unknown")
+
+def load_people(file_name):
+		try:
+			path = "input/"
+			with open(path+file_name, "r") as f:
+				for line in f:
+					index = line.split()
+					first_name = index[0]
+					last_name = index[1]
+					phone = index[2]
+					type_ = index[3]
+					opt_in = "N"
+					try:
+						opt_in = index[4]
+					except IndexError:
+						pass
+					add_person(first_name, last_name, phone, type_, opt_in)
+		except FileNotFoundError as e:
+			print(str(e))
+
 def print_unallocated(out, file_name):
 	output = Room.all_unallocated_persons()
 	if len(output) > 0:
@@ -62,6 +113,8 @@ def create_room(room_name, room_type):
 				office = Office(room_name_curr)
 				Office.add(office)
 				print("Room (Office): %s Added" % office.name)
+			else:
+				print("There are no rooms of type %s" % room_type_curr)
 			room_input_index += 1
 		#print(Dojo.rooms())
 		#print(LivingSpace.rooms())
@@ -103,6 +156,8 @@ def add_person(first_name, last_name, phone, type_, opt_in="N"):
 				office = Office(selection)
 				office.allocate_to(staff)
 				print("Staff: %s allocated to Office room: %s" % (staff.last_name, office.name))
+		else:
+			print("There are no persons of type %s" % type_)
 		print("Person added")
 		#print(persons_detail)
 	except Exception as e:

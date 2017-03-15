@@ -6,6 +6,8 @@ Usage:
   run.py print_room (<room_name>)
   run.py print_allocations [(-o [<filename>])]
   run.py print_unallocated [(-o [<filename>])]
+  run.py reallocate_person <person_identifier> <new_room_name>
+  run.py load_people
   run.py (-i | --interactive)
   run.py (-h | --help)
 
@@ -20,7 +22,7 @@ import sys
 import cmd
 from docopt import docopt, DocoptExit
 
-from controller import create_room, add_person, print_room, print_allocations, print_unallocated
+from controller import create_room, add_person, print_room, print_allocations, print_unallocated, reallocate_person, load_people
 
 def docopt_cmd(func):
     """
@@ -87,6 +89,16 @@ class MyInteractive (cmd.Cmd):
     def do_print_unallocated(self, arg):
         """Usage: print_unallocated [(-o [<filename>])]"""
         print_unallocated(arg['-o'], arg['<filename>'])
+
+    @docopt_cmd
+    def do_reallocate_person(self, arg):
+        """Usage: reallocate_person <person_identifier> <new_room_name>"""
+        reallocate_person(arg['<person_identifier>'], arg['<new_room_name>'])
+
+    @docopt_cmd
+    def do_load_people(self, arg):
+        """Usage: run.py load_people"""
+        load_people(default="input.txt")
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""

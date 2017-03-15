@@ -12,7 +12,7 @@ class Room(object):
 
 	name = "Room"
 	capacity = 0
-	type_ = "Room"
+	type_ = "ROOM"
 
 	def __init__(self, name):
 		if isinstance(name, float) or isinstance(name, int):
@@ -27,6 +27,17 @@ class Room(object):
 		name = name.replace(" ", "_")
 		name = name.upper()
 		self.name = name
+		self.type_ = self.type_.upper()
+
+	@classmethod
+	def from_name(cls, name):
+		#Differed import due to cyclic import problem 
+		from models.dojo import Dojo
+		room = cls(name)
+		if Dojo.has_room(room):
+			return room
+		else:
+			raise ValueError("Room not found")
 
 	def allocate_to(self, person):
 		self.filter(person)
@@ -63,7 +74,7 @@ class Room(object):
 
 	def has_capacity(self):
 		allocation_name_type_str = "%s-%s" % (self.name, self.type_)
-		if allocations_name_type.count(allocation_name_type_str) <= self.capacity:
+		if allocations_name_type.count(allocation_name_type_str)+1 <= self.capacity:
 			return True
 		return False
 
@@ -119,7 +130,6 @@ class Room(object):
 		allocated = cls.all_allocated_phones()
 		all_ = persons_phone
 		unallocated = all_ - allocated
-		#print(unallocated)
 		return unallocated
 
 	@classmethod
@@ -133,7 +143,6 @@ class Room(object):
 			type_ = detail[2]
 			opt_in = detail[3]
 			output += "%s, %s, %s, %s\n" % (phone, last_name, first_name, type_)
-		#print(output)
 		return output
 
 	@classmethod
@@ -152,7 +161,6 @@ class Room(object):
 			type_ = detail[2]
 			opt_in = detail[3]
 			output += "%s, %s, %s, %s\n" % (phone, last_name, first_name, type_)
-		#print(output)
 		return output
 
 	@classmethod
@@ -194,7 +202,6 @@ class Room(object):
 				output += "%s, %s, %s, %s\n" % (phone, last_name, first_name, type_)
 			else:
 				output += "%s-%s, %s, %s, %s, %s\n" % (room_name, room_type, phone, last_name, first_name, type_)
-		#print(output)
 		return output
 
 	@classmethod
@@ -204,6 +211,40 @@ class Room(object):
 		f = open(path+file_name, "w")
 		f.write(content)
 		f.close()
+
+	@classmethod
+	def reallocate(cls, person, room):
+		#Check if room user is allocating to has the allocation or is lacking capacity
+		if room.has_allocation(person):
+			raise ValueError("%s is already in %s" % (persons_phone+"-"+person.last_name, room.room_name+"-"+room_type))
+		if room.has_capacity() is False:
+			raise ValueError("Sorry %s is at capacity" % room.name)
+		#Get all current allocations to the given person 
+		current_allocations = []
+		allocated_phones = cls.all_allocated_phones()
+		if person.phone in allocated_phones:
+			for allocation in allocations:
+				phone = allocation[2]
+				if phone == person.phone:
+					current_allocations.append(allocation)
+		#For each current allocation
+		for allocation in current_allocations:
+			type_ = allocation[1]
+			name = allocation[0]
+			#Allocate if the room they are coming from is of the same type
+			if room.type_ == type_:
+				if type_ == "LIVINGSPACE":
+					from models.livingspace import LivingSpace
+					old = LivingSpace.from_name(name)
+					old.arrogate_from(person)
+					room.allocate_to(person)
+				elif type_ == "OFFICE":
+					from models.office import Office
+					old = Office.from_name(name)
+					old.arrogate_from(person)
+					room.allocate_to(person)
+			else:
+				raise ValueError("You may only reallocate between rooms of the same type")
 
 	@classmethod
 	def clear(cls):

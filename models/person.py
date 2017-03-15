@@ -15,6 +15,9 @@ class Person(object):
 	type_ = "Person"
 
 	def __init__(self, first_name, last_name, phone, opt_in="N"):
+		phone = phone.replace(" ", "")
+		if phone.isdigit() is False:
+			raise ValueError("The phone number provided %s is invalid" % phone)
 		input_ = [first_name, last_name, phone]
 		if "" or None in input_:
 			raise ValueError("Please enter required information correctly and in full")
@@ -50,7 +53,7 @@ class Person(object):
 			last_name = info[1]
 			type_ = info[2]
 			opt_in = info[3]
-			person = Person(first_name, last_name, phone, opt_in)
+			person = cls(first_name, last_name, phone, opt_in)
 			person.type_ = type_
 			return person
 		else:
