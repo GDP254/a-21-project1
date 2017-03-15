@@ -40,7 +40,7 @@ def get_room(room_name):
 def load_people(file_name):
 		try:
 			path = "input/"
-			with open(path+file_name, "r") as f:
+			with open(path+file_name+".txt", "r") as f:
 				for line in f:
 					index = line.split()
 					first_name = index[0]
