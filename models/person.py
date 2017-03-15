@@ -32,6 +32,8 @@ class Person(object):
 			names[name_index] = names[name_index].replace(" ", "")
 			names[name_index] = names[name_index].upper()
 			name_index += 1
+		if opt_in not in ["y", "Y", "n", "N"]:
+			opt_in = "N"
 		if opt_in is not None:
 			opt_in = opt_in.upper()
 		self.first_name = names[0]
@@ -40,7 +42,7 @@ class Person(object):
 		self.opt_in = opt_in
 
 	#alternate constructor
-	@staticmethod
+	@classmethod
 	def from_phone(cls, phone):
 		"""To Do
 

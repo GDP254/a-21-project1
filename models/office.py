@@ -11,6 +11,18 @@ class Office(Room):
 	__offices_set = set()
 
 	@classmethod
+	def from_name(cls, name):
+		room = cls(name)
+		if Dojo.has_room(room):
+			room_name_type = room.name+"-"+room.type_
+			if room_name_type in cls.__offices_set:
+				return room
+			else:
+				raise ValueError("Room not found")
+		else:
+			raise ValueError("Room not found")
+
+	@classmethod
 	def add(cls, office):
 		cls.filter_office(office)
 		Dojo.add_room(office)

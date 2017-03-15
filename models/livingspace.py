@@ -6,9 +6,22 @@ from models.state import allocations_name_type
 class LivingSpace(Room):
 
 	capacity = 6
-	type_ = "LivingSpace"
+	type_ = "LIVINGSPACE"
 	__livingspaces = dict()
 	__livingspaces_set = set()
+
+	@classmethod
+	def from_name(cls, name):
+		room = cls(name)
+		if Dojo.has_room(room):
+			room_name_type = room.name+"-"+room.type_
+			if room_name_type in cls.__livingspaces_set:
+				return room
+			else:
+				raise ValueError("Room not found")
+		else:
+			raise ValueError("Room not found")
+		
 
 	@classmethod
 	def add(cls, livingspace):

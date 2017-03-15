@@ -29,6 +29,7 @@ class Room(object):
 		self.name = name
 		self.type_ = self.type_.upper()
 
+	"""
 	@classmethod
 	def from_name(cls, name):
 		#Differed import due to cyclic import problem 
@@ -38,6 +39,7 @@ class Room(object):
 			return room
 		else:
 			raise ValueError("Room not found")
+	"""
 
 	def allocate_to(self, person):
 		self.filter(person)
@@ -227,24 +229,33 @@ class Room(object):
 				phone = allocation[2]
 				if phone == person.phone:
 					current_allocations.append(allocation)
-		#For each current allocation
-		for allocation in current_allocations:
-			type_ = allocation[1]
-			name = allocation[0]
-			#Allocate if the room they are coming from is of the same type
-			if room.type_ == type_:
-				if type_ == "LIVINGSPACE":
+		if len(current_allocations) > 0: 
+			#For each current allocation
+			for allocation in current_allocations:
+				type_ = allocation[1]
+				name = allocation[0]
+				#Allocate if the room they are coming from is of the same type
+				if type_ == "LIVINGSPACE" and room.type_ == "LIVINGSPACE":
 					from models.livingspace import LivingSpace
 					old = LivingSpace.from_name(name)
 					old.arrogate_from(person)
 					room.allocate_to(person)
-				elif type_ == "OFFICE":
+					print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+					break
+				elif type_ == "OFFICE" and room.type_ == "OFFICE":
 					from models.office import Office
 					old = Office.from_name(name)
 					old.arrogate_from(person)
 					room.allocate_to(person)
-			else:
-				raise ValueError("You may only reallocate between rooms of the same type")
+					print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+					break
+		else:
+			if room.type_ == "LIVINGSPACE":
+				room.allocate_to(person)
+				print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+			elif room.type_ == "OFFICE":
+				room.allocate_to(person)
+				print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
 
 	@classmethod
 	def clear(cls):

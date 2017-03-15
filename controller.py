@@ -10,16 +10,12 @@ from models.dojo import Dojo
 from models.state import persons_phone, persons_detail
 
 def reallocate_person(phone, room_name):
-	"""
-	print("Phone::"+phone)
-	print("Room::"+room_name)
-	person = get_person(phone)
-	room = get_room(room_name)
-	Room.reallocate(person, room)
-	print("%s-%s reallocated to %s-%s" % (person.name, person.type_, room.name, room.type_))
-	"""
-	print("Work in Progess")
-	pass
+	try:
+		person = get_person(phone)
+		room = get_room(room_name)
+		Room.reallocate(person, room)
+	except Exception as e:
+		print(str(e))
 
 def get_person(phone):
 	try:
@@ -29,7 +25,7 @@ def get_person(phone):
 	try:
 		return Staff.from_phone(phone)
 	except ValueError:
-		raise ValueError("specifed room is unknown")
+		raise ValueError("specifed phone is unknown")
 
 def get_room(room_name):
 	try:

@@ -7,7 +7,7 @@ Usage:
   run.py print_allocations [(-o [<filename>])]
   run.py print_unallocated [(-o [<filename>])]
   run.py reallocate_person <person_identifier> <new_room_name>
-  run.py load_people
+  run.py load_people [(-in [<filename>])]
   run.py (-i | --interactive)
   run.py (-h | --help)
 
@@ -15,6 +15,7 @@ Options:
     -i, --interactive  Interactive Mode
     -h, --help  Show this screen and exit.
     -o  Output to file 
+    -in  Input from file 
 
 """
 
@@ -97,7 +98,8 @@ class MyInteractive (cmd.Cmd):
 
     @docopt_cmd
     def do_load_people(self, arg):
-        """Usage: run.py load_people"""
+        """Usage: run.py load_people [(-in [<filename>])]"""
+        print(arg)
         load_people(default="input.txt")
 
     def do_quit(self, arg):
