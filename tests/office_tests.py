@@ -113,11 +113,9 @@ class TestOffice(TestCase):
 		Office.add(office)
 		initial_room_count = len(Dojo.rooms())
 		initial_office_count = len(Office.rooms())
-		print(Office.rooms())
 		Office.remove(office)
 		new_room_count = len(Dojo.rooms())
 		new_office_count = len(Office.rooms())
-		print(Office.rooms())
 		self.assertEqual([initial_room_count-1, initial_office_count-1],
 						 [new_room_count, new_office_count])
 

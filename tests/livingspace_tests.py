@@ -177,11 +177,9 @@ class TestLivingSpace(TestCase):
 		LivingSpace.add(livingspace)
 		initial_room_count = len(Dojo.rooms())
 		initial_livingspace_count = len(LivingSpace.rooms())
-		print(LivingSpace.rooms())
 		LivingSpace.remove(livingspace)
 		new_room_count = len(Dojo.rooms())
 		new_livingspace_count = len(LivingSpace.rooms())
-		print(LivingSpace.rooms())
 		self.assertEqual([initial_room_count-1, initial_livingspace_count-1],
 						 [new_room_count, new_livingspace_count])
 

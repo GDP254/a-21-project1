@@ -38,7 +38,7 @@ class TestPrint(TestCase):
 		office.allocate_to(fellow)
 		allocations_ = Room.all_allocations()
 		output = Room.members(allocations_, room_tag=True)
-		expected_output = "NDO2-Office, 0856443324, NDOBILE2, XONE2, FELLOW\n"
+		expected_output = "NDO2-OFFICE, 0856443324, NDOBILE2, XONE2, FELLOW\n"
 		self.assertEqual(output, expected_output)
 
 	def test_print_existing_allocations_to_default_file(self):
@@ -70,7 +70,7 @@ class TestPrint(TestCase):
 		Room.to_file(expected_output, file_name)
 		path = "output/"
 		f = open(path+file_name+".txt", "r")
-		output = f.read() #"NDO2-Office, 0856443324, NDOBILE2, XONE2, FELLOW"
+		output = f.read() 
 		f.close()
 		self.assertEqual(expected_output, output)
 
