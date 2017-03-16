@@ -166,7 +166,7 @@ class Room(object):
 		return output
 
 	@classmethod
-	def all_unallocated_rooms(cls):
+	def all_allocated_rooms(cls):
 		output = []
 		for column in allocations:
 			name = column[0]

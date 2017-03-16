@@ -7,6 +7,7 @@ from tests.fellow_tests import TestFellow
 from tests.print_tests import TestPrint
 from tests.reallocate_tests import TestReallocate
 from tests.controller_tests import TestController
+from tests.state_tests import TestState
 
 if __name__ == '__main__':
     main()
