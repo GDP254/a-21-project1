@@ -1,4 +1,5 @@
 import random
+import os
 
 from models.person import Person
 from models.fellow import Fellow
@@ -40,7 +41,11 @@ def get_room(room_name):
 def load_people(file_name):
 		try:
 			path = "input/"
-			with open(path+file_name+".txt", "r") as f:
+			file_ = path+file_name+".txt"
+			file_size = os.stat(file_).st_size
+			if file_size <= 0:
+				raise IOError("Specified file is empty")
+			with open(file_, "r") as f:
 				for line in f:
 					index = line.split()
 					first_name = index[0]
@@ -54,6 +59,8 @@ def load_people(file_name):
 						pass
 					add_person(first_name, last_name, phone, type_, opt_in)
 		except FileNotFoundError as e:
+			print(str(e))
+		except IOError as e:
 			print(str(e))
 
 def print_unallocated(out, file_name):

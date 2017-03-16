@@ -16,11 +16,19 @@ class TestController(TestCase):
 
 	def test_load_people_valid_path(self):
 		self.clear_stores()
-		path = "test_in.txt"
+		path = "test_in"
 		load_people(path)
 		output = persons_phone
-		#content of test_in.txt has the following content
+		#test_in.txt has the following content
 		expected_out =  set(["075588228", "5221455", "6655255", "1515151"])
+		self.assertEqual(expected_out, output)
+
+	def test_load_people_valid_path(self):
+		self.clear_stores()
+		expected_out = persons_phone
+		path = "nothing_to_load"
+		load_people(path)
+		output = persons_phone
 		self.assertEqual(expected_out, output)
 
 	def clear_stores(self):
