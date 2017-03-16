@@ -218,7 +218,7 @@ class Room(object):
 	def reallocate(cls, person, room):
 		#Check if room user is allocating to has the allocation or is lacking capacity
 		if room.has_allocation(person):
-			raise ValueError("%s is already in %s" % (persons_phone+"-"+person.last_name, room.room_name+"-"+room_type))
+			raise ValueError("%s-%s is already in %s-%s" % (person.phone, person.last_name, room.name, room.type_))
 		if room.has_capacity() is False:
 			raise ValueError("Sorry %s is at capacity" % room.name)
 		#Get all current allocations to the given person 
@@ -229,28 +229,125 @@ class Room(object):
 				phone = allocation[2]
 				if phone == person.phone:
 					current_allocations.append(allocation)
-		if len(current_allocations) > 0: 
-			#For each current allocation
-			for allocation in current_allocations:
-				type_ = allocation[1]
-				name = allocation[0]
-				#Allocate if the room they are coming from is of the same type
-				if type_ == "LIVINGSPACE" and room.type_ == "LIVINGSPACE":
-					from models.livingspace import LivingSpace
-					old = LivingSpace.from_name(name)
-					old.arrogate_from(person)
-					room.allocate_to(person)
-					print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
-					break
-				elif type_ == "OFFICE" and room.type_ == "OFFICE":
-					from models.office import Office
-					old = Office.from_name(name)
-					old.arrogate_from(person)
-					room.allocate_to(person)
-					print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
-					break
+
+		"""Fellow or Staff allocated to Office or LivingSpace
+
+				if person is Fellow and person has allocation to office alone:
+					if destined room type is office:
+						allow reallocation from office
+					if destined room type is LivingSpace:
+						allow allocation to LivingSpace
+				if person is Fellow and person has allocation to livingspace alone:
+					if destined room type is office:
+						allow allocation to office
+					if destined room type is LivingSpace:
+						allow reallocation from LivingSpace
+				if person is Staff and has allocation to office alone:
+					allow reallocation from office
+		"""
+		"""Fellow allocated to Office and LivingSpace
+
+				if person is Fellow and person has allocation to both office and livingspace:
+					if destined room type is office:
+						allow reallocation from office
+					if destined room type is LivingSpace:
+						allow reallocation from LivingSpace
+		"""
+
+		if len(current_allocations) > 0:
+			if len(current_allocations) is 1:
+				allocation = current_allocations[0]
+				allocated_type = allocation[1]
+				allocated_name = allocation[0]
+				if person.type_ is "FELLOW":
+					if allocated_type == room.type_:
+						if room.type_ == "LIVINGSPACE":
+							#if person is Fellow and person has allocation to livingspace alone and destined room type is LivingSpace
+							from models.livingspace import LivingSpace
+							old = LivingSpace.from_name(allocated_name)
+							old.arrogate_from(person)
+							room.allocate_to(person)
+							print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+						elif room.type_ == "OFFICE":
+							#if person is Fellow and person has allocation to office alone and destined room type is office
+							from models.office import Office
+							old = Office.from_name(allocated_name)
+							old.arrogate_from(person)
+							room.allocate_to(person)
+							print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+						else:
+							raise ValueError("Data in Invalid State. Room type other than LivingSpace and Office allocated.")
+					else:
+						#if person is Fellow and person has allocation to either livingspace or office alone and destined room type is the opposite
+						if person.type_ == "STAFF":
+							raise ValueError("Cannot reallocate staff to livingspace.")
+						room.allocate_to(person)
+						print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+				elif person.type_ is "STAFF":
+					if allocated_type == room.type_:
+						if room.type_ == "OFFICE":
+							#if person is Staff and has allocation to office alone
+							from models.office import Office
+							old = Office.from_name(allocated_name)
+							old.arrogate_from(person)
+							room.allocate_to(person)
+							print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+						else:
+							raise ValueError("Cannot reallocate staff to livingspace.")
+					else:
+						raise ValueError("Staff may only be allocated to offices. Allocated room type and destined room type to dont match.")
+			elif len(current_allocations) is 2:
+				allocation1 = current_allocations[0]
+				allocated_type1 = allocation1[1]
+				allocated_name1 = allocation1[0]
+				allocation2 = current_allocations[1]
+				allocated_type2 = allocation2[1]
+				allocated_name2 = allocation2[0]
+				if person.type_ is "FELLOW":
+					if allocated_type1 == room.type_:
+						if room.type_ == "LIVINGSPACE":
+							#if person is Fellow and person has allocation to both office and livingspace and destined room type is LivingSpace
+							from models.livingspace import LivingSpace
+							old = LivingSpace.from_name(allocated_name1)
+							old.arrogate_from(person)
+							room.allocate_to(person)
+							print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+						elif room.type_ == "OFFICE":
+							#if person is Fellow and person has allocation to both office and livingspace and destined room type is office
+							from models.office import Office
+							old = Office.from_name(allocated_name1)
+							old.arrogate_from(person)
+							room.allocate_to(person)
+							print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+						else:
+							raise ValueError("Data in Invalid State. Room type other than LivingSpace and Office allocated")
+					elif allocated_type2 == room.type_:
+						if room.type_ == "LIVINGSPACE":
+							#if person is Fellow and person has allocation to both office and livingspace and destined room type is LivingSpace
+							from models.livingspace import LivingSpace
+							old = LivingSpace.from_name(allocated_name2)
+							old.arrogate_from(person)
+							room.allocate_to(person)
+							print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+						elif room.type_ == "OFFICE":
+							#if person is Fellow and person has allocation to both office and livingspace and destined room type is office
+							from models.office import Office
+							old = Office.from_name(allocated_name2)
+							old.arrogate_from(person)
+							room.allocate_to(person)
+							print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+						else:
+							raise ValueError("Data in Invalid State. Room type other than LivingSpace and Office allocated")
+					else:
+						raise ValueError("Data in Invalid State. Allocated room type and destined room type to dont match")
+				else:
+					raise ValueError("Data in Invalid State. A non fellow cannot have more than one allocation")
+			else:
+				raise ValueError("Data in Invalid State. Person can have no more than 2 allocations")
 		else:
 			if room.type_ == "LIVINGSPACE":
+				if person.type_ == "STAFF":
+					raise ValueError("Cannot reallocate staff to livingspace.")
 				room.allocate_to(person)
 				print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
 			elif room.type_ == "OFFICE":

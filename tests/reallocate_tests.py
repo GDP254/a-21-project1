@@ -33,6 +33,14 @@ class TestReallocate(TestCase):
 		self.assertEqual([livingspace1.has_allocation(fellow), livingspace.has_allocation(fellow)],
 						 [True, False])
 
+	def test_reallocate_existing_staff_to_office(self):
+		office = Office('My9994')
+		Office.add(office)
+		staff = Staff("Ugeg", "Insdnis", "073437")
+		office.allocate_to(staff)
+		with self.assertRaises(ValueError):
+			Room.reallocate(staff, office)
+
 	def test_reallocate_staff_to_office(self):
 		office = Office('Myok848')
 		Office.add(office)
