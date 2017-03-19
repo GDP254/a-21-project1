@@ -1,9 +1,14 @@
+from sqlalchemy import create_engine, Column, String, Integer
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+
 from models.room import Room
 """Narrative
 
 The Dojo is a facility that holds a set of uniquely named rooms.
 It should not be instantiated and should allow for the addition and removal of rooms.
 """
+Base = declarative_base()
 
 class Dojo(object):
 

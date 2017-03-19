@@ -21,7 +21,6 @@ class LivingSpace(Room):
 				raise ValueError("Room not found")
 		else:
 			raise ValueError("Room not found")
-		
 
 	@classmethod
 	def add(cls, livingspace):

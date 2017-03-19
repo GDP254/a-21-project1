@@ -1,3 +1,7 @@
+from sqlalchemy import create_engine, Column, String, Integer
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+
 from models.person import Person
 from models.state import allocations, allocations_set, allocations_name_type, persons_detail, persons_phone
 
@@ -8,11 +12,20 @@ They can have unique names, capacity and two types
  i.e. Office/ LivingSpace.
 """
 
-class Room(object):
+Base = declarative_base()
+
+class Room(Base):
 
 	name = "Room"
 	capacity = 0
 	type_ = "ROOM"
+
+	__tablename__ = "rooms"
+
+	id_ = Column(Integer, primary_key=True)
+	roomname = Column(String(25), unique=True)
+	roomcapacity = Column(Integer)
+	roomtype = Column(String(25))
 
 	def __init__(self, name):
 		if isinstance(name, float) or isinstance(name, int):
@@ -28,18 +41,53 @@ class Room(object):
 		name = name.upper()
 		self.name = name
 		self.type_ = self.type_.upper()
+		#db
+		self.roomname = self.name
+		self.roomtype = self.type_
+		self.roomcapacity = self.roomcapacity
 
-	"""
 	@classmethod
-	def from_name(cls, name):
-		#Differed import due to cyclic import problem 
+	def save_state(cls):
+		engine = create_engine("sqlite:///db/mydb.db", echo=False)
+		cls.metadata.create_all(engine)
+		Session = sessionmaker(bind=engine)
+		session = Session()
 		from models.dojo import Dojo
-		room = cls(name)
-		if Dojo.has_room(room):
-			return room
-		else:
-			raise ValueError("Room not found")
-	"""
+		rooms = cls.rooms()
+		for room_name, room_detail in rooms.items():
+			#Create new instance of person
+			capacity = room_detail[0]["capacity"]
+			type_ = room_detail[1]["type_"]
+			new_room = cls(room_name)
+			new_room.set_capacity(capacity)
+			new_room.set_type(type_)
+			session.add(new_room)
+		session.commit()
+		session.close()
+
+	#setter only to used in the process of saving state
+	def set_capacity(self, capacity):
+		self.capacity = capacity
+		self.roomcapacity = capacity
+
+	#setter only to used in the process of saving state
+	def set_type(self, type_):
+		self.type_ = type_
+		self.roomtype = type_
+
+	@classmethod
+	def load_state(cls):
+		cls.clear()
+		engine = create_engine("sqlite:///db/mydb.db", echo=False)
+		Session = sessionmaker(bind=engine)
+		session = Session()
+		room_info = session.query(Room).filter_by(roomtype=cls.__name__.upper()).all()
+		for room in room_info:
+			room_ = cls(room.roomname)
+			room_.set_capacity(room.roomcapacity)
+			room_.set_type(room.roomtype)
+			cls.add(room_)
+		session.close()
 
 	def allocate_to(self, person):
 		self.filter(person)

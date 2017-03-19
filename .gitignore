@@ -23,6 +23,7 @@ $RECYCLE.BIN/
 venv/
 output/
 input/
+db/
 
 # Windows shortcuts
 *.lnk

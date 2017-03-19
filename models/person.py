@@ -1,3 +1,7 @@
+from sqlalchemy import create_engine, Column, String, Integer
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+
 from models.state import persons_detail, persons_phone
 
 """Narrative
@@ -7,12 +11,23 @@ They can have unique phone numbers, two names and a indicator of type
  i.e. Office/ LivingSpace.
 """
 
-class Person(object):
+Base = declarative_base()
+
+class Person(Base):
 
 	first_name = None
 	last_name = None
 	phone = None
 	type_ = "Person"
+
+	__tablename__ = "persons"
+
+	id_ = Column(Integer, primary_key=True)
+	phonenumber = Column(String(25), unique=True)
+	firstname = Column(String(25))
+	lastname = Column(String(25))
+	role = Column(String(25))
+	optin = Column(String(1))
 
 	def __init__(self, first_name, last_name, phone, opt_in="N"):
 		phone = phone.replace(" ", "")
@@ -40,6 +55,12 @@ class Person(object):
 		self.last_name = names[1]
 		self.phone = str(phone)
 		self.opt_in = opt_in
+		#db
+		self.phonenumber = self.phone
+		self.firstname = self.first_name
+		self.lastname = self.last_name
+		self.role = self.type_
+		self.optin = self.opt_in
 
 	#alternate constructor
 	@classmethod
@@ -48,7 +69,8 @@ class Person(object):
 
 		Retrieve detail recor of phone and initialize based on the information
 		"""
-		
+		print("Person phone below")
+		print(persons_phone)
 		if phone in persons_phone:
 			info = persons_detail[phone]
 			first_name = info[0]
@@ -57,10 +79,46 @@ class Person(object):
 			opt_in = info[3]
 			person = cls(first_name, last_name, phone, opt_in)
 			person.type_ = type_
+			person.role = type_
 			return person
 		else:
 			raise ValueError("Specified phone does not exist")
 
+	@classmethod
+	def save_state(cls):
+		engine = create_engine("sqlite:///db/mydb.db", echo=False)
+		cls.metadata.create_all(engine)
+		Session = sessionmaker(bind=engine)
+		session = Session()
+		for phone in persons_phone:
+			#Create new instance of person
+			firstname = persons_detail[phone][0]
+			lastname = persons_detail[phone][1]
+			type_ = persons_detail[phone][2]
+			optin = persons_detail[phone][3]
+			new_person = cls(firstname, lastname, phone, optin)
+			new_person.type_ = type_
+			new_person.role = type_
+			session.add(new_person)
+		session.commit()
+		session.close()
+
+	@classmethod
+	def load_state(cls):
+		cls.clear()
+		engine = create_engine("sqlite:///db/mydb.db", echo=False)
+		Session = sessionmaker(bind=engine)
+		session = Session()
+		person_info = session.query(Person).all()
+		for person in person_info:
+			print(person.phonenumber)
+			persons_phone.add(person.phonenumber)
+			persons_detail.update({person.phonenumber:[person.firstname,
+														person.lastname,
+														person.role,
+														person.optin]})
+		session.close()
+	
 	def register(self):
 		if self.registered():
 			raise ValueError("Specifed phone is already registered")
