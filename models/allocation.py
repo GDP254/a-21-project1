@@ -12,7 +12,7 @@ class Allocation(Base):
 	__tablename__ = "allocations"
 
 	id_ = Column(Integer, primary_key=True)
-	roomname = Column(String(25), unique=True)
+	roomname = Column(String(25))
 	roomtype = Column(String(25))
 	phonenumber = Column(String(25))
 

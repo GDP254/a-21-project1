@@ -69,8 +69,6 @@ class Person(Base):
 
 		Retrieve detail recor of phone and initialize based on the information
 		"""
-		print("Person phone below")
-		print(persons_phone)
 		if phone in persons_phone:
 			info = persons_detail[phone]
 			first_name = info[0]
@@ -115,7 +113,6 @@ class Person(Base):
 		session = Session()
 		person_info = session.query(Person).all()
 		for person in person_info:
-			print(person.phonenumber)
 			persons_phone.add(person.phonenumber)
 			persons_detail.update({person.phonenumber:[person.firstname,
 														person.lastname,
