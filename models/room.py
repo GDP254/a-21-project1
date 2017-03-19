@@ -254,9 +254,9 @@ class Room(Base):
 			type_ = detail[2]
 			opt_in = detail[3]
 			if room_tag is False:
-				output += "%s, %s, %s, %s\n" % (phone, last_name, first_name, type_)
+				output += " %s, %s, %s, %s\n" % (phone, last_name, first_name, type_)
 			else:
-				output += "%s-%s, %s, %s, %s, %s\n" % (room_name, room_type, phone, last_name, first_name, type_)
+				output += " %s-%s, %s, %s, %s, %s\n" % (room_name, room_type, phone, last_name, first_name, type_)
 		return output
 
 	@classmethod

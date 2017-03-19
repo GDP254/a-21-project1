@@ -21,7 +21,7 @@ def save_state(file_name="default"):
 	LivingSpace.save_state(file_name)
 	Office.save_state(file_name)
 	Allocation.save_state(file_name)
-	print("State saved.")
+	print_pretty("The current state of the application has successfully been saved in the db directory under the file: %s." % file_)
 
 def load_state(file_name="default"):
 	file_name = str(file_name)
@@ -32,7 +32,7 @@ def load_state(file_name="default"):
 		LivingSpace.load_state(file_name)
 		Office.load_state(file_name)
 		Allocation.load_state(file_name)
-		print("State loaded.")
+		print_pretty("The current state of the application has successfully been loaded from the file: %s under the directory db." % file_)
 	else:
 		raise Exception("Specified file does not exist")
 
@@ -42,7 +42,7 @@ def reallocate_person(phone, room_name):
 		room = get_room(room_name)
 		Room.reallocate(person, room)
 	except Exception as e:
-		print(str(e))
+		print_pretty(str(e))
 
 def get_person(phone):
 	try:
@@ -85,9 +85,9 @@ def load_people(file_name):
 						pass
 					add_person(first_name, last_name, phone, type_, opt_in)
 		except FileNotFoundError as e:
-			print(str(e))
+			print_pretty(str(e))
 		except IOError as e:
-			print(str(e))
+			print_pretty(str(e))
 
 def print_unallocated(out, file_name):
 	output = Room.all_unallocated_persons()
@@ -95,14 +95,14 @@ def print_unallocated(out, file_name):
 		if out is True:
 			if file_name is not None:
 				Room.to_file(output, file_name)
-				print("Unallocated persons in output/%s.txt" % file_name)
+				print_pretty(" A list of unallocated persons can be found in the output directory under the file %s.txt" % file_name)
 			else:
 				Room.to_file(output)
-				print("Unallocated persons in the default output/File.txt")
+				print_pretty(" A list of unallocated persons can be found in the output directory under the file File.txt")
 		else:
-			print(output)
+			print_pretty(output)
 	else:
-		print("There are no unallocated persons to show")
+		print_pretty("There are no unallocated persons to show")
 
 def print_allocations(out, file_name):
 	allocations = Room.all_allocations()
@@ -111,22 +111,23 @@ def print_allocations(out, file_name):
 		if out is True:
 			if file_name is not None:
 				Room.to_file(output, file_name)
-				print("Allocated persons in output/%s.txt" % file_name)
+				print_pretty(" A list of allocated persons can be found in the output directory under the file %s.txt" % file_name)
 			else:
 				Room.to_file(output)
-				print("Allocated persons in the default output/File.txt")
+				print_pretty(" A list of allocated persons can be found in the output directory under the file File.txt")
 		else:
-			print(output)
+			print_pretty(output)
 	else:
-		print("There are no allocations to show")
+		print_pretty(" There are no allocations to show")
 
 def print_room(room_name):
 	try:
 		room = Room(room_name)
 		allocations = room.allocations()
-		print(Room.members(allocations))
+		print_pretty(" Allocations to room: "+room.name)
+		print_pretty(Room.members(allocations))
 	except Exception as e:
-		print(str(e))
+		print_pretty(str(e))
 
 def create_room(room_name, room_type):
 	try:
@@ -137,19 +138,16 @@ def create_room(room_name, room_type):
 			if room_type_curr == "LIVINGSPACE":
 				livingspace = LivingSpace(room_name_curr)
 				LivingSpace.add(livingspace)
-				print("Room (Living space): %s Added" % livingspace.name)
+				print_pretty(" A living space called %s has been successfully created." % livingspace.name)
 			elif room_type_curr == "OFFICE":
 				office = Office(room_name_curr)
 				Office.add(office)
-				print("Room (Office): %s Added" % office.name)
+				print_pretty(" An office called %s has been successfully created." % office.name)
 			else:
-				print("There are no rooms of type %s" % room_type_curr)
+				print_pretty(" The specified room type %s, is currently not supported." % room_type_curr)
 			room_input_index += 1
-		#print(Dojo.rooms())
-		#print(LivingSpace.rooms())
-		#print(Office.rooms())
 	except Exception as e:
-		print(str(e))
+		print_pretty(str(e))
 
 def add_person(first_name, last_name, phone, type_, opt_in="N"):
 	try:
@@ -157,37 +155,50 @@ def add_person(first_name, last_name, phone, type_, opt_in="N"):
 		if type_ == "FELLOW":
 			fellow = Fellow(first_name, last_name, phone, opt_in)
 			fellow.register()
+			first_name = fellow.first_name
+			last_name = fellow.last_name
+			type_ = fellow.type_
 			available_offices = Office.available() 
 			if available_offices is False:
-				print("There are currently no available offices")
+				print_pretty(" There are currently no available offices.")
 			else:
 				selection = random.choice(list(available_offices))
 				office = Office(selection)
 				office.allocate_to(fellow)
-				print("Fellow: %s allocated to Office room: %s" % (fellow.last_name, office.name))
+				print_pretty(" The fellow: %s has been allocated to the office: %s." % (fellow.last_name, office.name))
 			if fellow.opt_in == "Y":
 				available_livingspaces = LivingSpace.available()
 				if available_livingspaces is False:
-					print("There are currently no available living spaces")
+					print_pretty(" There are currently no available living spaces.")
 				else:
 					selection = random.choice(list(available_livingspaces))
 					livingspace = LivingSpace(selection)
 					livingspace.allocate_to(fellow)
-					print("Fellow: %s allocated to Living space room: %s" % (fellow.last_name, livingspace.name))
+					print_pretty(" The fellow: %s has been allocated to the living space: %s." % (fellow.last_name, livingspace.name))
 		elif type_ == "STAFF":
 			staff = Staff(first_name, last_name, phone, opt_in)
 			staff.register()
+			first_name = staff.first_name
+			last_name = staff.last_name
+			type_ = staff.type_
 			available_offices = Office.available() 
 			if available_offices is False:
-				print("There are currently no available offices")
+				print_pretty(" There are currently no available offices.")
 			else:
 				selection = random.choice(list(available_offices))
 				office = Office(selection)
 				office.allocate_to(staff)
-				print("Staff: %s allocated to Office room: %s" % (staff.last_name, office.name))
+				print_pretty(" The staff: %s has been allocated to the office: %s." % (staff.last_name, office.name))
 		else:
-			print("There are no persons of type %s" % type_)
-		print("Person added")
+			print_pretty(" %s is currently not a supported role." % type_)
+		print_pretty(" A %s: %s %s has been successfully created." % (type_, first_name, last_name))
 		#print(persons_detail)
 	except Exception as e:
-		print(str(e))
+		print_pretty(str(e))
+
+def print_pretty(message):
+	print("-"*70)
+	print("")
+	print(message)
+	print("")
+	print("-"*70)
