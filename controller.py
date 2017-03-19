@@ -40,7 +40,7 @@ def reallocate_person(phone, room_name):
 	try:
 		person = get_person(phone)
 		room = get_room(room_name)
-		Room.reallocate(person, room)
+		print_pretty(Room.reallocate(person, room))
 	except Exception as e:
 		print_pretty(str(e))
 

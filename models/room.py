@@ -320,14 +320,14 @@ class Room(Base):
 							old = LivingSpace.from_name(allocated_name)
 							old.arrogate_from(person)
 							room.allocate_to(person)
-							print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+							return "The %s: %s %s has been successfully reallocated to the %s: %s" % (person.type_, person.first_name, person.last_name, room.type_, room.name)
 						elif room.type_ == "OFFICE":
 							#if person is Fellow and person has allocation to office alone and destined room type is office
 							from models.office import Office
 							old = Office.from_name(allocated_name)
 							old.arrogate_from(person)
 							room.allocate_to(person)
-							print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+							return "The %s: %s %s has been successfully reallocated to the %s: %s" % (person.type_, person.first_name, person.last_name, room.type_, room.name)
 						else:
 							raise ValueError("Data in Invalid State. Room type other than LivingSpace and Office allocated.")
 					else:
@@ -336,7 +336,7 @@ class Room(Base):
 							raise ValueError("Cannot reallocate staff to livingspace.")
 						room.allocate_to(person)
 						print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
-				elif person.type_ is "STAFF":
+				elif person.type_ == "STAFF":
 					if allocated_type == room.type_:
 						if room.type_ == "OFFICE":
 							#if person is Staff and has allocation to office alone
@@ -344,7 +344,7 @@ class Room(Base):
 							old = Office.from_name(allocated_name)
 							old.arrogate_from(person)
 							room.allocate_to(person)
-							print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+							return "%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_)
 						else:
 							raise ValueError("Cannot reallocate staff to livingspace.")
 					else:
@@ -356,7 +356,7 @@ class Room(Base):
 				allocation2 = current_allocations[1]
 				allocated_type2 = allocation2[1]
 				allocated_name2 = allocation2[0]
-				if person.type_ is "FELLOW":
+				if person.type_ == "FELLOW":
 					if allocated_type1 == room.type_:
 						if room.type_ == "LIVINGSPACE":
 							#if person is Fellow and person has allocation to both office and livingspace and destined room type is LivingSpace
@@ -364,14 +364,14 @@ class Room(Base):
 							old = LivingSpace.from_name(allocated_name1)
 							old.arrogate_from(person)
 							room.allocate_to(person)
-							print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+							return "The %s: %s %s has been successfully reallocated to the %s: %s" % (person.type_, person.first_name, person.last_name, room.type_, room.name)
 						elif room.type_ == "OFFICE":
 							#if person is Fellow and person has allocation to both office and livingspace and destined room type is office
 							from models.office import Office
 							old = Office.from_name(allocated_name1)
 							old.arrogate_from(person)
 							room.allocate_to(person)
-							print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+							return "The %s: %s %s has been successfully reallocated to the %s: %s" % (person.type_, person.first_name, person.last_name, room.type_, room.name)
 						else:
 							raise ValueError("Data in Invalid State. Room type other than LivingSpace and Office allocated")
 					elif allocated_type2 == room.type_:
@@ -381,14 +381,14 @@ class Room(Base):
 							old = LivingSpace.from_name(allocated_name2)
 							old.arrogate_from(person)
 							room.allocate_to(person)
-							print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+							return "The %s: %s %s has been successfully reallocated to the %s: %s" % (person.type_, person.first_name, person.last_name, room.type_, room.name)
 						elif room.type_ == "OFFICE":
 							#if person is Fellow and person has allocation to both office and livingspace and destined room type is office
 							from models.office import Office
 							old = Office.from_name(allocated_name2)
 							old.arrogate_from(person)
 							room.allocate_to(person)
-							print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+							return "The %s: %s %s has been successfully reallocated to the %s: %s" % (person.type_, person.first_name, person.last_name, room.type_, room.name)
 						else:
 							raise ValueError("Data in Invalid State. Room type other than LivingSpace and Office allocated")
 					else:
@@ -402,10 +402,10 @@ class Room(Base):
 				if person.type_ == "STAFF":
 					raise ValueError("Cannot reallocate staff to livingspace.")
 				room.allocate_to(person)
-				print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+				return "The %s: %s %s has been successfully reallocated to the %s: %s" % (person.type_, person.first_name, person.last_name, room.type_, room.name)
 			elif room.type_ == "OFFICE":
 				room.allocate_to(person)
-				print("%s-%s reallocated to %s-%s" % (person.last_name, person.type_, room.name, room.type_))
+				return "The %s: %s %s has been successfully reallocated to the %s: %s" % (person.type_, person.first_name, person.last_name, room.type_, room.name)
 
 	@classmethod
 	def clear(cls):
