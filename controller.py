@@ -8,7 +8,28 @@ from models.room import Room
 from models.office import Office
 from models.livingspace import LivingSpace
 from models.dojo import Dojo
+from models.allocation import Allocation
 from models.state import persons_phone, persons_detail
+
+def save_state(file_name="default"):
+	file_name = str(file_name)
+	Person.save_state(file_name)
+	LivingSpace.save_state(file_name)
+	Office.save_state(file_name)
+	Allocation.save_state(file_name)
+	print("State saved.")
+
+def load_state(file_name="default"):
+	file_name = str(file_name)
+	path = "db/"
+	file_ = file_name+".db"
+	if os.path.isfile(path+file_):
+		Person.load_state(file_name)
+		Room.load_state(file_name)
+		Allocation.load_state(file_name)
+		print("State loaded.")
+	else:
+		raise Exception("Specified file does not exist")
 
 def reallocate_person(phone, room_name):
 	try:

@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from unittest import TestCase, main
+import os
 
 from controller import load_people
+from controller import save_state
+from controller import load_state
 from models.dojo import Dojo
 from models.room import Room
 from models.livingspace import LivingSpace
@@ -30,6 +33,10 @@ class TestController(TestCase):
 		load_people(path)
 		output = persons_phone
 		self.assertEqual(expected_out, output)
+
+	def test_load_state_file_not_existing(self):
+		with self.assertRaises(Exception):
+			load_state("nopenotthis")
 
 	def clear_stores(self):
 		#Clean data stores to run print tests

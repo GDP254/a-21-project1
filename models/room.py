@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -47,8 +49,10 @@ class Room(Base):
 		self.roomcapacity = self.roomcapacity
 
 	@classmethod
-	def save_state(cls):
-		engine = create_engine("sqlite:///db/mydb.db", echo=False)
+	def save_state(cls, file_name="default"):
+		path = "db/"
+		file_ = file_name+".db"
+		engine = create_engine("sqlite:///"+path+file_, echo=False)
 		cls.metadata.create_all(engine)
 		Session = sessionmaker(bind=engine)
 		session = Session()
@@ -76,9 +80,11 @@ class Room(Base):
 		self.roomtype = type_
 
 	@classmethod
-	def load_state(cls):
+	def load_state(cls, file_name="default"):
 		cls.clear()
-		engine = create_engine("sqlite:///db/mydb.db", echo=False)
+		path = "db/"
+		file_ = file_name+".db"
+		engine = create_engine("sqlite:///"+path+file_, echo=False)
 		Session = sessionmaker(bind=engine)
 		session = Session()
 		room_info = session.query(Room).filter_by(roomtype=cls.__name__.upper()).all()

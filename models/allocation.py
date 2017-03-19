@@ -22,9 +22,11 @@ class Allocation(Base):
 		self.phonenumber = phonenumber
 
 	@classmethod
-	def save_state(cls):
+	def save_state(cls, file_name="default"):
 		allocations = Room.all_allocations()
-		engine = create_engine("sqlite:///db/mydb.db", echo=False)
+		path = "db/"
+		file_ = file_name+".db"
+		engine = create_engine("sqlite:///"+path+file_, echo=False)
 		cls.metadata.create_all(engine)
 		Session = sessionmaker(bind=engine)
 		session = Session()
@@ -38,9 +40,11 @@ class Allocation(Base):
 		session.close()
 
 	@classmethod
-	def load_state(cls):
+	def load_state(cls, file_name="default"):
 		Room.clear()
-		engine = create_engine("sqlite:///db/mydb.db", echo=False)
+		path = "db/"
+		file_ = file_name+".db"
+		engine = create_engine("sqlite:///"+path+file_, echo=False)
 		Session = sessionmaker(bind=engine)
 		session = Session()
 		allocation_info = session.query(Allocation).all()

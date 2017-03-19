@@ -85,8 +85,10 @@ class Person(Base):
 			raise ValueError("Specified phone does not exist")
 
 	@classmethod
-	def save_state(cls):
-		engine = create_engine("sqlite:///db/mydb.db", echo=False)
+	def save_state(cls, file_name="default"):
+		path = "db/"
+		file_ = file_name+".db"
+		engine = create_engine("sqlite:///"+path+file_, echo=False)
 		cls.metadata.create_all(engine)
 		Session = sessionmaker(bind=engine)
 		session = Session()
@@ -104,9 +106,11 @@ class Person(Base):
 		session.close()
 
 	@classmethod
-	def load_state(cls):
+	def load_state(cls, file_name="default"):
 		cls.clear()
-		engine = create_engine("sqlite:///db/mydb.db", echo=False)
+		path = "db/"
+		file_ = file_name+".db"
+		engine = create_engine("sqlite:///"+path+file_, echo=False)
 		Session = sessionmaker(bind=engine)
 		session = Session()
 		person_info = session.query(Person).all()
