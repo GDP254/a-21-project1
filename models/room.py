@@ -137,7 +137,7 @@ class Room(Base):
 
 		Ensure the current instance exists
 
-		Retrieve allocations whose first value matches 
+		Retrieve allocations whose first value matches
 		the name of the current instance
 		"""
 
@@ -158,7 +158,6 @@ class Room(Base):
 		Retrieve all allocations
 		call members function with allocation as argument
 		"""
-
 		return allocations
 
 	@classmethod
@@ -269,7 +268,7 @@ class Room(Base):
 			raise ValueError("%s-%s is already in %s-%s" % (person.phone, person.last_name, room.name, room.type_))
 		if room.has_capacity() is False:
 			raise ValueError("Sorry %s is at capacity" % room.name)
-		#Get all current allocations to the given person 
+		#Get all current allocations to the given person
 		current_allocations = []
 		allocated_phones = cls.all_allocated_phones()
 		if person.phone in allocated_phones:
@@ -408,7 +407,6 @@ class Room(Base):
 
 		Clear all data stores relevant to rooms for testing purposes
 		"""
-
 		del allocations[:]
 		allocations_set.clear()
 		del allocations_name_type[:]

@@ -24,7 +24,7 @@ class Allocation(Base):
 	@classmethod
 	def save_state(cls):
 		allocations = Room.all_allocations()
-		engine = create_engine("sqlite:///db/mydb.db", echo=True)
+		engine = create_engine("sqlite:///db/mydb.db", echo=False)
 		cls.metadata.create_all(engine)
 		Session = sessionmaker(bind=engine)
 		session = Session()
@@ -39,9 +39,8 @@ class Allocation(Base):
 
 	@classmethod
 	def load_state(cls):
-		print("Allocation::::::LoadState______")
 		Room.clear()
-		engine = create_engine("sqlite:///db/mydb.db", echo=True)
+		engine = create_engine("sqlite:///db/mydb.db", echo=False)
 		Session = sessionmaker(bind=engine)
 		session = Session()
 		allocation_info = session.query(Allocation).all()

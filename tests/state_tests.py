@@ -102,8 +102,8 @@ class TestState(TestCase):
 		full_db_staff = [db_staff.firstname, db_staff.lastname, db_staff.phonenumber, db_staff.role, db_staff.optin]
 		session.close()
 		self.assertEqual(full_db_staff, full_staff)
-		
-	
+
+
 	def test_office_save_state(self):
 		#clean up to avoid conflict between tests
 		os.remove("db/mydb.db")
@@ -122,7 +122,7 @@ class TestState(TestCase):
 		full_db_office = [db_office.roomname, db_office.roomcapacity, db_office.roomtype]
 		session.close()
 		self.assertEqual(full_db_office, full_office)
-	
+
 	def test_office_load_state(self):
 		#clean up to avoid conflict between tests
 		os.remove("db/mydb.db")
@@ -146,7 +146,7 @@ class TestState(TestCase):
 		full_db_office = [db_office.roomname, db_office.roomcapacity, db_office.roomtype]
 		session.close()
 		self.assertEqual(full_db_office, full_office)
-	
+
 	def test_livingspace_save_state(self):
 		#clean up to avoid conflict between tests
 		os.remove("db/mydb.db")
@@ -165,7 +165,7 @@ class TestState(TestCase):
 		full_db_livingspace = [db_livingspace.roomname, db_livingspace.roomcapacity, db_livingspace.roomtype]
 		session.close()
 		self.assertEqual(full_db_livingspace, full_livingspace)
-	
+
 	def test_livingspace_load_state(self):
 		#clean up to avoid conflict between tests
 		os.remove("db/mydb.db")
@@ -188,7 +188,7 @@ class TestState(TestCase):
 		full_livingspace = [livingspace.name, livingspace.capacity, livingspace.type_]
 		full_db_livingspace = [db_livingspace.roomname, db_livingspace.roomcapacity, db_livingspace.roomtype]
 		session.close()
-		self.assertEqual(full_db_livingspace, full_livingspace)	
+		self.assertEqual(full_db_livingspace, full_livingspace)
 
 	def test_allocations_save_state(self):
 		#clean up to avoid conflict between tests
@@ -210,7 +210,7 @@ class TestState(TestCase):
 		db_output = [db_allocation.roomname, db_allocation.roomtype, db_allocation.phonenumber]
 		self.assertEqual(Room.all_allocations()[0], db_output)
 		session.close()
-	"""
+
 	def test_allocations_load_state(self):
 		#clean up to avoid conflict between tests
 		os.remove("db/mydb.db")
@@ -221,20 +221,19 @@ class TestState(TestCase):
 		fellow = Fellow("onon", "ekek", "000009", "Y")
 		fellow.register()
 		livingspace.allocate_to(fellow)
-		prev_allocations = Room.all_allocations()
+		prev_allocations = Room.all_allocations().copy()
 		Allocation.save_state()
 		#clear memory stores
 		self.clear_stores()
-		empty_allocations = Room.all_allocations()
+		empty_allocations = Room.all_allocations().copy()
 		#db
 		Allocation.load_state()
-		loaded_allocations = Room.all_allocations()
+		loaded_allocations = Room.all_allocations().copy()
 		#compare
 		expected_output = ["HWAN", "LIVINGSPACE", "000009"]
-		output = [prev_allocations[0], empty_allocations[0], loaded_allocations[0]]
+		output = [prev_allocations[0], empty_allocations, loaded_allocations[0]]
 		self.assertEqual(output, [expected_output, [], expected_output])
-		session.close()
-	"""
+	
 	def clear_stores(self):
 		#Clean data stores to run print tests
 		Dojo.clear()
