@@ -197,6 +197,7 @@ def add_person(first_name, last_name, phone, type_, opt_in="N"):
 					livingspace = LivingSpace(selection)
 					livingspace.allocate_to(fellow)
 					print_pretty(" The fellow: %s has been allocated to the living space: %s." % (fellow.last_name, livingspace.name))
+			print_pretty(" A %s: %s %s has been successfully created." % (type_, first_name, last_name))
 		elif type_ == "STAFF":
 			staff = Staff(first_name, last_name, phone, opt_in)
 			staff.register()
@@ -211,9 +212,9 @@ def add_person(first_name, last_name, phone, type_, opt_in="N"):
 				office = Office(selection)
 				office.allocate_to(staff)
 				print_pretty(" The staff: %s has been allocated to the office: %s." % (staff.last_name, office.name))
+			print_pretty(" A %s: %s %s has been successfully created." % (type_, first_name, last_name))
 		else:
 			print_pretty(" %s is currently not a supported role." % type_)
-		print_pretty(" A %s: %s %s has been successfully created." % (type_, first_name, last_name))
 		#print(persons_detail)
 	except Exception as e:
 		print_pretty(str(e))
