@@ -7,6 +7,14 @@ from models.state import allocations, allocations_set, allocations_name_type
 
 Base = declarative_base()
 
+"""Allocations (Many to Many Relationsip between persons and rooms)
+
+This class is used to create instances of allocations to be stored in the database.
+Given the the identifiers are custom i.e. phone number for person and room name for room,
+I chose to avoid the work of mapping db generated identifiers and just have a table with 
+my identifiers as expressed in memory due to time constraints.
+"""
+
 class Allocation(Base):
 
 	__tablename__ = "allocations"
