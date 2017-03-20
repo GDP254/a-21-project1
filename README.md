@@ -2,7 +2,7 @@
 
 An implementation of an Office Space Allocation solution for the purpose of learning key development concepts and skills.
 
-**Test Coverage:** 24%
+**Test Coverage:** 23%
 
 **Environment**
 

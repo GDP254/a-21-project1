@@ -34,10 +34,6 @@ class TestController(TestCase):
 		output = persons_phone
 		self.assertEqual(expected_out, output)
 
-	def test_load_state_file_not_existing(self):
-		with self.assertRaises(Exception):
-			load_state("nopenotthis")
-
 	def clear_stores(self):
 		#Clean data stores to run print tests
 		Dojo.clear()
