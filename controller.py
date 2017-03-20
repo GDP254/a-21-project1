@@ -1,5 +1,6 @@
 import random
 import os
+from sqlalchemy import exc
 
 from models.person import Person
 from models.fellow import Fellow
@@ -15,26 +16,36 @@ def save_state(file_name="default"):
 	file_name = str(file_name)
 	path = "db/"
 	file_ = file_name+".db"
-	if os.path.isfile(path+file_):
-		os.remove(path+file_)
-	Person.save_state(file_name)
-	LivingSpace.save_state(file_name)
-	Office.save_state(file_name)
-	Allocation.save_state(file_name)
-	print_pretty("The current state of the application has successfully been saved in the db directory under the file: %s." % file_)
+	try:
+		if os.path.isfile(path+file_):
+			os.remove(path+file_)
+		Person.save_state(file_name)
+		LivingSpace.save_state(file_name)
+		Office.save_state(file_name)
+		Allocation.save_state(file_name)
+		print_pretty("The current state of the application has successfully been saved in the db directory under the file: %s." % file_)
+	except exc.DBAPIError:
+		print_pretty(str("There is currently a problem with the specified file please try a different one."))
+	except Exception as e:
+		print_pretty(str(e))
 
 def load_state(file_name="default"):
 	file_name = str(file_name)
 	path = "db/"
 	file_ = file_name+".db"
-	if os.path.isfile(path+file_):
-		Person.load_state(file_name)
-		LivingSpace.load_state(file_name)
-		Office.load_state(file_name)
-		Allocation.load_state(file_name)
-		print_pretty("The current state of the application has successfully been loaded from the file: %s under the directory db." % file_)
-	else:
-		raise Exception("Specified file does not exist")
+	try:
+		if os.path.isfile(path+file_):
+			Person.load_state(file_name)
+			LivingSpace.load_state(file_name)
+			Office.load_state(file_name)
+			Allocation.load_state(file_name)
+			print_pretty("The current state of the application has successfully been loaded from the file: %s under the directory db." % file_)
+		else:
+			raise Exception("The specified db file (%s) does not exist under the db directory." % file_)
+	except exc.DBAPIError:
+		print_pretty(str("There is currently a problem with the specified file please try a different one."))
+	except Exception as e:
+		print_pretty(str(e))
 
 def reallocate_person(phone, room_name):
 	try:
@@ -68,57 +79,68 @@ def load_people(file_name):
 		try:
 			path = "input/"
 			file_ = path+file_name+".txt"
-			file_size = os.stat(file_).st_size
-			if file_size <= 0:
-				raise IOError("Specified file is empty")
-			with open(file_, "r") as f:
-				for line in f:
-					index = line.split()
-					first_name = index[0]
-					last_name = index[1]
-					phone = index[2]
-					type_ = index[3]
-					opt_in = "N"
-					try:
-						opt_in = index[4]
-					except IndexError:
-						pass
-					add_person(first_name, last_name, phone, type_, opt_in)
+			if os.path.isfile(file_):
+				file_size = os.stat(file_).st_size
+				if file_size <= 0:
+					raise IOError("Specified file is empty")
+				with open(file_, "r") as f:
+					for line in f:
+						index = line.split()
+						first_name = index[0]
+						last_name = index[1]
+						phone = index[2]
+						type_ = index[3]
+						opt_in = "N"
+						try:
+							opt_in = index[4]
+						except IndexError:
+							pass
+						add_person(first_name, last_name, phone, type_, opt_in)
+			else:
+				raise Exception("The specified txt file (%s.%s) does not exist under the input directory." % (file_name, "txt"))
 		except FileNotFoundError as e:
 			print_pretty(str(e))
 		except IOError as e:
 			print_pretty(str(e))
+		except Exception as e:
+			print_pretty(str(e))
 
 def print_unallocated(out, file_name):
-	output = Room.all_unallocated_persons()
-	if len(output) > 0:
-		if out is True:
-			if file_name is not None:
-				Room.to_file(output, file_name)
-				print_pretty(" A list of unallocated persons can be found in the output directory under the file %s.txt" % file_name)
+	try:
+		output = Room.all_unallocated_persons()
+		if len(output) > 0:
+			if out is True:
+				if file_name is not None:
+					Room.to_file(output, file_name)
+					print_pretty(" A list of unallocated persons can be found in the output directory under the file %s.txt" % file_name)
+				else:
+					Room.to_file(output)
+					print_pretty(" A list of unallocated persons can be found in the output directory under the file File.txt")
 			else:
-				Room.to_file(output)
-				print_pretty(" A list of unallocated persons can be found in the output directory under the file File.txt")
+				print_pretty(output)
 		else:
-			print_pretty(output)
-	else:
-		print_pretty("There are no unallocated persons to show")
+			print_pretty(" There are no unallocated persons to show")
+	except Exception as e:
+		print_pretty(str(e))
 
 def print_allocations(out, file_name):
-	allocations = Room.all_allocations()
-	output = Room.members(allocations, room_tag=True)
-	if len(output) > 0:
-		if out is True:
-			if file_name is not None:
-				Room.to_file(output, file_name)
-				print_pretty(" A list of allocated persons can be found in the output directory under the file %s.txt" % file_name)
+	try:
+		allocations = Room.all_allocations()
+		output = Room.members(allocations, room_tag=True)
+		if len(output) > 0:
+			if out is True:
+				if file_name is not None:
+					Room.to_file(output, file_name)
+					print_pretty(" A list of allocated persons can be found in the output directory under the file %s.txt" % file_name)
+				else:
+					Room.to_file(output)
+					print_pretty(" A list of allocated persons can be found in the output directory under the file File.txt")
 			else:
-				Room.to_file(output)
-				print_pretty(" A list of allocated persons can be found in the output directory under the file File.txt")
+				print_pretty(output)
 		else:
-			print_pretty(output)
-	else:
-		print_pretty(" There are no allocations to show")
+			print_pretty(" There are no allocations to show")
+	except Exception as e:
+		print_pretty(str(e))
 
 def print_room(room_name):
 	try:
