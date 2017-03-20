@@ -24,7 +24,7 @@ import sys
 import cmd
 from docopt import docopt, DocoptExit
 
-from controller import create_room, add_person, print_room,\
+from app.controller import create_room, add_person, print_room,\
  print_allocations, print_unallocated, reallocate_person, load_people,\
  save_state, load_state
 
