@@ -48,8 +48,14 @@ class Room(Base):
 		self.roomtype = self.type_
 		self.roomcapacity = self.roomcapacity
 
+	"""Call only on child
+
+	This function should only be called on child classes
+	"""
 	@classmethod
 	def save_state(cls, file_name="default"):
+		if (cls.__name__.upper() not in ["OFFICE", "LIVINGSPACE"]):
+			raise Exception("Note: Save state should only be called on instances of office or livingspace")
 		path = "db/"
 		file_ = file_name+".db"
 		engine = create_engine("sqlite:///"+path+file_, echo=False)
@@ -79,8 +85,14 @@ class Room(Base):
 		self.type_ = type_
 		self.roomtype = type_
 
+	"""Call only on child
+
+	This function should only be called on child classes
+	"""
 	@classmethod
 	def load_state(cls, file_name="default"):
+		if (cls.__name__.upper() not in ["OFFICE", "LIVINGSPACE"]):
+			raise Exception("Note: Save state should only be called on instances of office or livingspace")
 		cls.clear()
 		path = "db/"
 		file_ = file_name+".db"
