@@ -2,7 +2,7 @@
 
 An implementation of an Office Space Allocation solution for the purpose of learning key development concepts and skills.
 
-**Test Coverage:** 23%
+**Test Coverage:** 68%
 
 **Environment**
 
@@ -24,6 +24,5 @@ Python version: 3.5.2
 
 **Tests**
 1. Run: ```python tests.py```
-2. ```coverage run run.py``` 
-3. ```coverage report``` 
+2. Run ```pytest --cov=app tests/``` for coverage.
 
