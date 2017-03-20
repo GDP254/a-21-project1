@@ -18,6 +18,10 @@ from models.state import persons_phone
 
 class TestState(TestCase):
 
+	def test_room_save_state(self):
+		with self.assertRaises(Exception):
+			Room.save_state("file_name")
+
 	def test_fellow_save_state(self):
 		path = "db/"
 		file_name = "mydb"
